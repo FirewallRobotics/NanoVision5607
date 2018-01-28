@@ -123,7 +123,7 @@ def main():
     #cvMjpegServerMid = cs.MjpegServer("PowerCell", 8082)#here
     #cvMjpegServerMid.setSource(cvSourceMid)
 
-    cvMjpegServer = cs.MjpegServer("Cargo", 8081)#here
+    cvMjpegServer = cs.MjpegServer("Cargo", 5801)#here
     cvMjpegServer.setSource(cvSource)
     cargo={
       "blue": {

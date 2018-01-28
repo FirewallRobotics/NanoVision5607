@@ -32,10 +32,10 @@ def adjust_gamma(image, gamma=1.0, iterations=1):
 test = np.zeros(shape=(HEIGHT, WIDTH, 3), dtype=np.uint8)
 
 cameras = {
-        "hub": "/dev/v4l/by-id/usb-EMEET_HD_Webcam_eMeet_C960_SN0001-video-index0",
+        "hub": "/dev/v4l/by-id/usb-046d_HD_Pro_Webcam_C920_E26E767F-video-index0",
         "cargo": "/dev/v4l/by-id/usb-Microsoft_Microsoft®_LifeCam_HD-3000-video-index0"
     }
-    ##cvsink, cvSource = setupSinkSource(0,"Cargo", 5802, WIDTH, HEIGHT, FPS)
+    ##cvsink, cvSource = setupSinkSource(0,"Cargo", 8082, WIDTH, HEIGHT, FPS)
 camera = cs.UsbCamera("usbcam", cameras["hub"])#1, devcam or vid
 camera.setVideoMode(cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
 
@@ -45,7 +45,7 @@ cvsink.setSource(camera)
 cvSource = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
 #cvSourceMid = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
 
-cvMjpegServer = cs.MjpegServer("Hub", 5803)#here
+cvMjpegServer = cs.MjpegServer("Hub", 8083)#here
 cvMjpegServer.setSource(cvSource)
 #cvMjpegServerMid = cs.MjpegServer("PowerCell", 8082)#here
 #cvMjpegServerMid.setSource(cvSourceMid)
@@ -59,9 +59,6 @@ while True:
     if time == 0:
         print("error:", cvsink.getError())
         continue
-    
-    cv2.imwrite('/home/team5607/production/NanoVision5607/source.jpg', imageorg)
-
     image = cv2.blur(imageorg,(blur_ksize, blur_ksize))
     #image = adjust_gamma(imageorg, gamma=0.4, iterations=20)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2HLS)
@@ -104,7 +101,8 @@ while True:
         biggest_contour = max(contour_sizes, key=lambda x: x[0])[1]
         x,y,w,h = cv2.boundingRect(biggest_contour)
         image_copy = cv2.rectangle(image_copy, (x,y),(x+w,y+h), color=(0, 255, 0))
-        NetworkTables.initialize(server='roborio-5607-frc.local')##change to be the IP adress of computer
+        #NetworkTables.initialize(server='roborio-5607-frc.local')##change to be the IP adress of computer
+        NetworkTables.initialize(server='192.168.1.63')##change to be the IP adress of computer
         sd1 = NetworkTables.getTable("hub")
         sd1.putNumber('x_min', x)  ## tuple
         sd1.putNumber('y_min', y) #tuple
