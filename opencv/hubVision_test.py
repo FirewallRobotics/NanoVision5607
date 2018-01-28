@@ -32,7 +32,7 @@ def adjust_gamma(image, gamma=1.0, iterations=1):
 test = np.zeros(shape=(HEIGHT, WIDTH, 3), dtype=np.uint8)
 
 cameras = {
-        "hub": "/dev/v4l/by-id/usb-046d_HD_Pro_Webcam_C920_E26E767F-video-index0",
+        "hub": "/dev/v4l/by-id/usb-EMEET_HD_Webcam_eMeet_C960_SN0001-video-index0",
         "cargo": "/dev/v4l/by-id/usb-Microsoft_Microsoft®_LifeCam_HD-3000-video-index0"
     }
     ##cvsink, cvSource = setupSinkSource(0,"Cargo", 8082, WIDTH, HEIGHT, FPS)
@@ -62,7 +62,7 @@ while True:
         print("error:", cvsink.getError())
 
         continue
-    contours, hierarchy = hubimage.process(imageorg)
+    contours = hubimage.process(imageorg)
     ###image = cv2.blur(imageorg,(blur_ksize, blur_ksize))
     ####image = adjust_gamma(imageorg, gamma=0.4, iterations=20)
     ###image = cv2.cvtColor(image, cv2.COLOR_BGR2HLS)
@@ -100,6 +100,7 @@ while True:
     #cv2.imwrite('contours_none_image1.jpg', image_copy)
     #cv2.destroyAllWindows()
     ####
+    print(contours)
     contour_sizes = [(cv2.contourArea(contour), contour) for contour in contours]
     try:
         biggest_contour = max(contour_sizes, key=lambda x: x[0])[1]
@@ -108,7 +109,7 @@ while True:
         co = [biggest_contour,next_contour]
         both = np.concatenate(co)
         x,y,w,h = cv2.boundingRect(both)
-
+        print(f'{x}, {y}, {w}, {h}')
         image_copy = cv2.rectangle(image_copy, (x,y),(x+w,y+h), color=(0, 255, 0))
         NetworkTables.initialize(server='roborio-5607-frc.local')##change to be the IP adress of computer
         sd1 = NetworkTables.getTable("hub")

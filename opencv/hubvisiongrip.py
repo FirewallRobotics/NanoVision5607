@@ -82,7 +82,7 @@ class Hub:
         # Step Find_Contours0:
         self.__find_contours_input = self.cv_dilate_1_output
         (self.find_contours_output) = self.__find_contours(self.__find_contours_input, self.__find_contours_external_only)
-
+        return self.find_contours_output
 
     @staticmethod
     def __hsv_threshold(input, hue, sat, val):
@@ -152,7 +152,7 @@ class Hub:
         else:
             mode = cv2.RETR_LIST
         method = cv2.CHAIN_APPROX_SIMPLE
-        im2, contours, hierarchy =cv2.findContours(input, mode=mode, method=method)
+        contours, hierarchy =cv2.findContours(input, mode=mode, method=method)
         return contours
 
 
