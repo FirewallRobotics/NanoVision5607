@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from networktables import NetworkTables
 
 import cscore as cs
 
@@ -11,7 +12,8 @@ def adjust_gamma(image, gamma=1.0):
 
    return cv2.LUT(image, table)
 
-gamma = 0.5                                   # change the value here to get different result
+# See https://docs.opencv.org/3.4/d3/dc1/tutorial_basic_linear_transform.html
+gamma = 0.4                                   # change the value here to get different result
 
 
 #vid = cv2.VideoCapture(0)
@@ -38,15 +40,21 @@ cvSource = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGH
 cvMjpegServer = cs.MjpegServer("PowerCell", 8081)#here
 cvMjpegServer.setSource(cvSource)
 count = 0
+#NetworkTables.initialize(server='roborio-5607-frc.local')
+NetworkTables.initialize(server='192.168.1.135')
+# This doesn't work # NetworkTables.initialize(server='DESKTOP-QJOB25H')
+sd = NetworkTables.getTable("hub")
+sd.putNumber("Test", 1)
 
 while True:
-    count += 1
+    #count += 1
     time, imageorg = cvsink.grabFrame(test)
     if time == 0:
         print("error:", cvsink.getError())
         continue
     adjusted = adjust_gamma(imageorg, gamma=gamma)
-    image = cv2.cvtColor(adjusted, cv2.COLOR_BGR2HLS)
+    #image = cv2.cvtColor(adjusted, cv2.COLOR_BGR2HLS)
+    image = cv2.cvtColor(imageorg, cv2.COLOR_BGR2HLS)
     image = cv2.inRange(image, (hue[0], lum[0], sat[0]),  (hue[1], lum[1], sat[1]))#dilate, then mask somehow,
     kernel = np.ones((5,5), np.uint8)
     mask = cv2.dilate(image, kernel, iterations = (int) (15 +0.5))
@@ -88,10 +96,13 @@ while True:
         x,y,w,h = cv2.boundingRect(biggest_contour)
         image_copy = cv2.rectangle(image_copy, (x,y),(x+w,y+h), color=(0, 255, 0))
     except ValueError:
-        pass
+        x = y = w = h = 0
 
 
-
+    sd.putNumber("x_min", x)
+    sd.putNumber("x_max", x+w)
+    sd.putNumber("y_min", y)
+    sd.putNumber("y_max", y+h)
     ##for i in contours: ##had i++, go back through
     ##
     ##    ## Find the area of contour
@@ -119,6 +130,7 @@ while True:
 
     #cv2.imwrite(f'contours_none_image{count}.jpg', image_copy) ##goal vision to push to camserver
     #cv2.waitKey(0)
+    #cvSource.putFrame(adjusted)
     cvSource.putFrame(image_copy)
 
     ###

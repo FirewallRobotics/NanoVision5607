@@ -12,9 +12,9 @@ import cv2
 #from powercellcv import *
 from networktables import NetworkTables
 def preprocess(frame):
-
+    blur_ksize=1
     out = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    out = cv2.blur(out,(blur_ksize, blur_ksize))
+    out = cv2.blur(out,(blur_ksize,blur_ksize))
     out = cv2.inRange(out, (hue_red[0], sat_red[0], val_red[0]),  (hue_red[1], sat_red[1], val_red[1]))
     out = cv2.inRange(out, (hue_blue[0], sat_blue[0], val_blue[0]),  (hue_blue[1], sat_blue[1], val_blue[1]))
     return out
@@ -212,8 +212,6 @@ def main():
                     sd.putNumber(f'X_{label}', radius)
 
                 return '''
-                '''
-                '''
 #####
         #powercell.process(test)
 
