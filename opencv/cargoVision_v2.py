@@ -107,12 +107,12 @@ def main():
     cvsink.setSource(camera)
 
     cvSource = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
-    cvSourceMid = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
+    #cvSourceMid = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
 
-    cvMjpegServerMid = cs.MjpegServer("PowerCell", 8082)#here
-    cvMjpegServerMid.setSource(cvSourceMid)
+    #cvMjpegServerMid = cs.MjpegServer("PowerCell", 8082)#here
+    #cvMjpegServerMid.setSource(cvSourceMid)
 
-    cvMjpegServer = cs.MjpegServer("PowerCell", 8081)#here
+    cvMjpegServer = cs.MjpegServer("Cargo", 8081)#here
     cvMjpegServer.setSource(cvSource)
     cargo={
       "blue": {

@@ -43,12 +43,12 @@ cvsink = cs.CvSink("cvsink")
 cvsink.setSource(camera)
 
 cvSource = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
-cvSourceMid = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
+#cvSourceMid = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
 
-cvMjpegServer = cs.MjpegServer("PowerCell", 8081)#here
+cvMjpegServer = cs.MjpegServer("Hub", 8083)#here
 cvMjpegServer.setSource(cvSource)
-cvMjpegServerMid = cs.MjpegServer("PowerCell", 8082)#here
-cvMjpegServerMid.setSource(cvSourceMid)
+#cvMjpegServerMid = cs.MjpegServer("PowerCell", 8082)#here
+#cvMjpegServerMid.setSource(cvSourceMid)
 count = 0
 
 blur_radius = 1
@@ -67,7 +67,7 @@ while True:
     mask = cv2.dilate(image, kernel, iterations=15)
     image = cv2.bitwise_and(image, image, mask=mask)
     contours, hierarchy = cv2.findContours(image=image, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_NONE)
-    cvSourceMid.putFrame(image)
+    #cvSourceMid.putFrame(image)
 
     #cv2.imwrite('source.jpg', image)
     # read the image
