@@ -1,0 +1,12 @@
+[Unit]
+Description=hubVision: Initialize the Goal Tape Vision Tracker
+After=multi-user.target
+
+[Service]
+ExecStart=/home/team5607/production/NanoVision5607/opencv/hubVision.py
+Restart=always
+StartLimitInterval=10
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
