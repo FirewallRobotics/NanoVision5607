@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=Vino VNC server
+Exec=/usr/lib/vino/vino-server
+NoDisplay=true
