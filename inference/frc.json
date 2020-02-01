@@ -1,0 +1,14 @@
+{
+   "cameras" : [
+      {
+         "name" : "",
+         "pixel format" : null,
+         "path" : "/dev/v4l/by-id/usb-046d_HD_Pro_Webcam_C920_E26E767F-video-index0",
+         "stream" : {
+            "properties" : []
+         }
+      }
+   ],
+   "team" : 5607,
+   "ntmode" : "client"
+}
