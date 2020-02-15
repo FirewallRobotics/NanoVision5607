@@ -20,19 +20,19 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 #
-
-import jetson.inference
+from powercellcv import *
 import jetson.utils
 import cscore as cs
 import cv2
 import argparse
 import sys
+import numpy as np
 
 # parse the command line
 parser = argparse.ArgumentParser(description="Locate objects in a live camera stream using an object detection DNN.", 
-						   formatter_class=argparse.RawTextHelpFormatter, epilog=jetson.inference.detectNet.Usage())
+						   formatter_class=argparse.RawTextHelpFormatter)
 
-parser.add_argument("--network", type=str, default="ssd-mobilenet-v2", help="pre-trained model to load (see below for options)")
+#parser.add_argument("--network", type=str, default="ssd-mobilenet-v2", help="pre-trained model to load (see below for options)")
 parser.add_argument("--overlay", type=str, default="box,labels,conf", help="detection overlay flags (e.g. --overlay=box,labels,conf)\nvalid combinations are:  'box', 'labels', 'conf', 'none'")
 parser.add_argument("--threshold", type=float, default=0.5, help="minimum detection threshold to use") 
 parser.add_argument("--camera", type=str, default="0", help="index of the MIPI CSI camera to use (e.g. CSI camera 0)\nor for VL42 cameras, the /dev/video device to use.\nby default, MIPI CSI camera 0 will be used.")
@@ -47,37 +47,43 @@ except:
 	sys.exit(0)
 
 # load the object detection network
-net = jetson.inference.detectNet(opt.network, sys.argv, opt.threshold)
+#net = jetson.inference.detectNet(opt.network, sys.argv, opt.threshold)
+net = powercellcv()
 
 # create the camera and display
 camera = jetson.utils.gstCamera(opt.width, opt.height, opt.camera)
 cvSource = cs.CvSource("cvsource",  cs.VideoMode.PixelFormat.kMJPEG, 320, 240, 30)
 cvMjpegServer = cs.MjpegServer("cvhttpserver", 8082)
 cvMjpegServer.setSource(cvSource)
+
 # capture the image
 while 1:
 	img, width, height = camera.CaptureRGBA(zeroCopy=1)
-	print("WTF:")
+	jetson.utils.cudaDeviceSynchronize()
+	aimg = jetson.utils.cudaToNumpy(img,width,height,4)
+	aimg1 = cv2.cvtColor(aimg.astype(np.uint8), cv2.COLOR_RGBA2BGR)
+	#print("WTF:")
 	print(type(img))
 	# detect objects in the image (with overlay)
-	detections = net.Detect(img, width, height, opt.overlay)
-
+	#detections = net.Detect(img, width, height, opt.overlay)
+	detections = net.process(aimg1)
+	print(type(detections))
 	# print the detections
-	print("detected {:d} objects in image".format(len(detections)))
+	#print("detected {:d} objects in image".format(len(detections)))
 
-	for detection in detections:
-		print(detection)
+	#for detection in detections:
+#		print(detection)
 
 	# render the image
-	numpyImg  = jetson.utils.cudaToNumpy(img,width,height,4)
-	cvSource.putFrame(numpyImg)
+#3	numpyImg  = jetson.utils.cudaToNumpy(img,width,height,4)
+	cvSource.putFrame(detections)
 
 # Stop trying to display -  MDH #	display.RenderOnce(img, width, height)
 
 	# update the title bar
 # Stop trying to display -  MDH #	display.SetTitle("{:s} | Network {:.0f} FPS".format(opt.network, net.GetNetworkFPS()))
-	print("{:s} | Network {:.0f} FPS".format(opt.network, net.GetNetworkFPS()))
+#	print("{:s} | Network {:.0f} FPS".format(opt.network, net.GetNetworkFPS()))
 
 	# print out performance info
-	net.PrintProfilerTimes()
+#	net.PrintProfilerTimes()
 
