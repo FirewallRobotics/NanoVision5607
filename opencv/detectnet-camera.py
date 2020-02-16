@@ -61,13 +61,13 @@ while 1:
 	img, width, height = camera.CaptureRGBA(zeroCopy=1)
 	jetson.utils.cudaDeviceSynchronize()
 	aimg = jetson.utils.cudaToNumpy(img,width,height,4)
-	aimg1 = cv2.cvtColor(aimg.astype(np.uint8), cv2.COLOR_RGBA2BGR)
+	#aimg1 = cv2.cvtColor(aimg.astype(np.uint8), cv2.COLOR_RGBA2BGR)
 	#print("WTF:")
-	print(type(img))
+	#print(type(img))
 	# detect objects in the image (with overlay)
 	#detections = net.Detect(img, width, height, opt.overlay)
-	detections = net.process(aimg1)
-	print(type(detections))
+	#net.process(aimg)
+	#print(type(aimg))
 	# print the detections
 	#print("detected {:d} objects in image".format(len(detections)))
 
@@ -75,8 +75,8 @@ while 1:
 #		print(detection)
 
 	# render the image
-#3	numpyImg  = jetson.utils.cudaToNumpy(img,width,height,4)
-	cvSource.putFrame(detections)
+	#numpyImg  = jetson.utils.cudaToNumpy(aimg1,width,height,4)
+	cvSource.putFrame(aimg)
 
 # Stop trying to display -  MDH #	display.RenderOnce(img, width, height)
 

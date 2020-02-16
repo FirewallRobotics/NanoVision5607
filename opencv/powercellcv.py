@@ -20,9 +20,9 @@ class powercellcv:
         self.cv_resize_output = None
 
         self.__hsv_threshold_input = self.cv_resize_output
-        self.__hsv_threshold_hue = [12.949640287769784, 95.9592529711375]
-        self.__hsv_threshold_saturation = [100.89928057553956, 255.0]
-        self.__hsv_threshold_value = [32.10431654676259, 255.0]
+        self.__hsv_threshold_hue = [12, 95]
+        self.__hsv_threshold_saturation = [100, 255]
+        self.__hsv_threshold_value = [32, 255]
 
         self.hsv_threshold_output = None
 
