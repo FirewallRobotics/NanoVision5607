@@ -12,9 +12,12 @@ import cv2
 from powercellcv import *
 
 def main():
-    hue = [12, 95]
-    sat = [100, 255]
-    val = [32, 255]
+    hue = [9.712230215827338, 57.82664451107176]
+    sat = [159.60172539934155, 255.0]
+    val = [128.6331951388042, 255.0]
+    blur_type = BlurType.Box_Blur
+    blur_radius = 4.716981132075472
+    blur_ksize = int(2 * round(blur_radius) + 1)
     powercell = powercellcv()
     camera = cs.UsbCamera("usbcam", 1)
     camera.setVideoMode(cs.VideoMode.PixelFormat.kMJPEG, 320, 240, 30)
@@ -54,9 +57,10 @@ def main():
 
         #cv2.flip(test, flipCode=0, dst=flip)
         out = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        out = cv2.blur(out,(blur_ksize, blur_ksize))
         out = cv2.inRange(out, (hue[0], sat[0], val[0]),  (hue[1], sat[1], val[1]))
         out = cv2.dilate(out, kernel, anchor, iterations = 3)#, cv2.BORDER_CONSTANT , bordervalue)
-        out = cv2.erode(out, kernel, anchor, iterations = 3)#, cv2.BORDER_CONSTANT , bordervalue)
+        out = cv2.erode(out, kernel, anchor, iterations = 2)#, cv2.BORDER_CONSTANT , bordervalue)
         cnts, a = cv2.findContours(out, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
         center = None
         #only do stuff if a single contor was found
