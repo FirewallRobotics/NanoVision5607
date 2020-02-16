@@ -1,0 +1,222 @@
+<grip:Pipeline>
+  <sources>
+    <grip:MultiImageFile>
+      <property name="path[21]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay2Videoframe_02680.png"/>
+      <property name="path[24]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay2Videoframe_00295.png"/>
+      <property name="path[27]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay2Videoframe_03005.png"/>
+      <property name="path[0]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02183.jpg"/>
+      <property name="path[11]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02192.jpg"/>
+      <property name="path[3]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02182.jpg"/>
+      <property name="path[14]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02203.jpg"/>
+      <property name="path[6]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02191.jpg"/>
+      <property name="path[17]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02188.jpg"/>
+      <property name="path[9]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02190.jpg"/>
+      <property name="path[30]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay2Videoframe_01000.png"/>
+      <property name="path[33]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay2Videoframe_02045.png"/>
+      <property name="path[36]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay2Videoframe_00135.png"/>
+      <property name="path[20]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02206.jpg"/>
+      <property name="path[23]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay2Videoframe_00040.png"/>
+      <property name="path[26]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay2Videoframe_00530.png"/>
+      <property name="path[29]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay2Videoframe_02535.png"/>
+      <property name="path[10]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02186.jpg"/>
+      <property name="path[2]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02196.jpg"/>
+      <property name="path[13]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02187.jpg"/>
+      <property name="path[5]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02195.jpg"/>
+      <property name="path[16]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02189.jpg"/>
+      <property name="path[8]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02184.jpg"/>
+      <property name="path[19]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02198.jpg"/>
+      <property name="path[32]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay2Videoframe_00875.png"/>
+      <property name="path[35]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay2Videoframe_00120.png"/>
+      <property name="path[38]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay2Videoframe_00690.png"/>
+      <property name="index" value="7"/>
+      <property name="path[22]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay2Videoframe_00915.png"/>
+      <property name="path[25]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay2Videoframe_02455.png"/>
+      <property name="path[28]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay2Videoframe_00450.png"/>
+      <property name="path[1]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02197.jpg"/>
+      <property name="path[4]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02194.jpg"/>
+      <property name="path[12]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02193.jpg"/>
+      <property name="path[7]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02185.jpg"/>
+      <property name="path[15]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02202.jpg"/>
+      <property name="path[18]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay1ImagesDSC02201.jpg"/>
+      <property name="numImages" value="39"/>
+      <property name="path[31]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay2Videoframe_00685.png"/>
+      <property name="path[34]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay2Videoframe_06545.png"/>
+      <property name="path[37]" value="/Users/mhale/wpilib/2020/docker/data/Kitti/images/filmingDay2Videoframe_00860.png"/>
+    </grip:MultiImageFile>
+  </sources>
+  <steps>
+    <grip:Step name="Resize Image">
+      <grip:Input step="0" socket="0"/>
+      <grip:Input step="0" socket="1">
+        <value>320.0</value>
+      </grip:Input>
+      <grip:Input step="0" socket="2">
+        <value>240.0</value>
+      </grip:Input>
+      <grip:Input step="0" socket="3">
+        <value>CUBIC</value>
+      </grip:Input>
+      <grip:Output step="0" socket="0" previewed="false"/>
+    </grip:Step>
+    <grip:Step name="Blur">
+      <grip:Input step="1" socket="0"/>
+      <grip:Input step="1" socket="1">
+        <value>BOX</value>
+      </grip:Input>
+      <grip:Input step="1" socket="2">
+        <value>4.716981132075472</value>
+      </grip:Input>
+      <grip:Output step="1" socket="0" previewed="false"/>
+    </grip:Step>
+    <grip:Step name="HSV Threshold">
+      <grip:Input step="2" socket="0"/>
+      <grip:Input step="2" socket="1">
+        <value>
+          <double>9.712230215827338</double>
+          <double>57.82664451107176</double>
+        </value>
+      </grip:Input>
+      <grip:Input step="2" socket="2">
+        <value>
+          <double>159.60172539934155</double>
+          <double>255.0</double>
+        </value>
+      </grip:Input>
+      <grip:Input step="2" socket="3">
+        <value>
+          <double>128.6331951388042</double>
+          <double>255.0</double>
+        </value>
+      </grip:Input>
+      <grip:Output step="2" socket="0" previewed="false"/>
+    </grip:Step>
+    <grip:Step name="CV dilate">
+      <grip:Input step="3" socket="0"/>
+      <grip:Input step="3" socket="1"/>
+      <grip:Input step="3" socket="2"/>
+      <grip:Input step="3" socket="3">
+        <value>3.0</value>
+      </grip:Input>
+      <grip:Input step="3" socket="4">
+        <value>BORDER_CONSTANT</value>
+      </grip:Input>
+      <grip:Input step="3" socket="5"/>
+      <grip:Output step="3" socket="0" previewed="false"/>
+    </grip:Step>
+    <grip:Step name="CV erode">
+      <grip:Input step="4" socket="0"/>
+      <grip:Input step="4" socket="1"/>
+      <grip:Input step="4" socket="2"/>
+      <grip:Input step="4" socket="3">
+        <value>2.0</value>
+      </grip:Input>
+      <grip:Input step="4" socket="4">
+        <value>BORDER_CONSTANT</value>
+      </grip:Input>
+      <grip:Input step="4" socket="5"/>
+      <grip:Output step="4" socket="0" previewed="false"/>
+    </grip:Step>
+    <grip:Step name="Mask">
+      <grip:Input step="5" socket="0"/>
+      <grip:Input step="5" socket="1"/>
+      <grip:Output step="5" socket="0" previewed="true"/>
+    </grip:Step>
+    <grip:Step name="Find Contours">
+      <grip:Input step="6" socket="0"/>
+      <grip:Input step="6" socket="1">
+        <value>false</value>
+      </grip:Input>
+      <grip:Output step="6" socket="0" previewed="true"/>
+    </grip:Step>
+    <grip:Step name="Find Blobs">
+      <grip:Input step="7" socket="0"/>
+      <grip:Input step="7" socket="1">
+        <value>1</value>
+      </grip:Input>
+      <grip:Input step="7" socket="2">
+        <value>
+          <double>0.0</double>
+          <double>1.0</double>
+        </value>
+      </grip:Input>
+      <grip:Input step="7" socket="3">
+        <value>false</value>
+      </grip:Input>
+      <grip:Output step="7" socket="0" previewed="true"/>
+    </grip:Step>
+    <grip:Step name="NTPublish BlobsReport">
+      <grip:Input step="8" socket="0"/>
+      <grip:Input step="8" socket="1">
+        <value>myBlobsReport</value>
+      </grip:Input>
+      <grip:Input step="8" socket="2">
+        <value>true</value>
+      </grip:Input>
+      <grip:Input step="8" socket="3">
+        <value>true</value>
+      </grip:Input>
+      <grip:Input step="8" socket="4">
+        <value>true</value>
+      </grip:Input>
+    </grip:Step>
+  </steps>
+  <connections>
+    <grip:Connection>
+      <grip:Output step="0" socket="0" previewed="false"/>
+      <grip:Input step="5" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="4" socket="0" previewed="false"/>
+      <grip:Input step="7" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output source="0" socket="0" previewed="true"/>
+      <grip:Input step="0" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="2" socket="0" previewed="false"/>
+      <grip:Input step="3" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="3" socket="0" previewed="false"/>
+      <grip:Input step="4" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="1" socket="0" previewed="false"/>
+      <grip:Input step="2" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="4" socket="0" previewed="false"/>
+      <grip:Input step="6" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="0" socket="0" previewed="false"/>
+      <grip:Input step="1" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="7" socket="0" previewed="true"/>
+      <grip:Input step="8" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="4" socket="0" previewed="false"/>
+      <grip:Input step="5" socket="1"/>
+    </grip:Connection>
+  </connections>
+  <settings>
+    <teamNumber>0</teamNumber>
+    <publishAddress>roboRIO-0-FRC.local</publishAddress>
+    <deployAddress>roboRIO-0-FRC.local</deployAddress>
+    <deployDir>/home/lvuser</deployDir>
+    <deployUser>lvuser</deployUser>
+    <deployJavaHome>/usr/local/frc/JRE/</deployJavaHome>
+    <deployJvmOptions>-Xmx50m -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:MaxNewSize=16m</deployJvmOptions>
+  </settings>
+  <codeGenerationSettings>
+    <language>Python</language>
+    <className>PowerCellCV</className>
+    <implementWpilibPipeline>false</implementWpilibPipeline>
+    <saveDir>/Users/mhale/wpilib/2020/NanoVision5607/opencv</saveDir>
+    <packageName></packageName>
+    <moduleName>vision</moduleName>
+  </codeGenerationSettings>
+</grip:Pipeline>
