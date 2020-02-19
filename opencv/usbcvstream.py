@@ -13,6 +13,9 @@ from powercellcv import *
 from networktables import NetworkTables
 
 def main():
+    WIDTH=320
+    HEIGHT=180
+    FPS=15
     hue = [9.712230215827338, 57.82664451107176]
     sat = [159.60172539934155, 255.0]
     val = [128.6331951388042, 255.0]
@@ -21,7 +24,7 @@ def main():
     blur_ksize = int(2 * round(blur_radius) + 1)
     powercell = powercellcv()
     camera = cs.UsbCamera("usbcam", 1)
-    camera.setVideoMode(cs.VideoMode.PixelFormat.kMJPEG, 320, 240, 15)
+    camera.setVideoMode(cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
 
    # mjpegServer = cs.MjpegServer("httpserver", 8081)
    # mjpegServer.setSource(camera)
@@ -31,25 +34,25 @@ def main():
     cvsink = cs.CvSink("cvsink")
     cvsink.setSource(camera)
 
-    cvSource = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, 320, 240, 15)
+    cvSource = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
     cvMjpegServer = cs.MjpegServer("cvhttpserver", 8082)
     cvMjpegServer.setSource(cvSource)
 
     print("OpenCV output mjpg server listening at http://0.0.0.0:8082")
 
-    test = np.zeros(shape=(240, 320, 3), dtype=np.uint8)
-    flip = np.zeros(shape=(240, 320, 3), dtype=np.uint8)
+    test = np.zeros(shape=(HEIGHT, WIDTH, 3), dtype=np.uint8)
+    flip = np.zeros(shape=(HEIGHT, WIDTH, 3), dtype=np.uint8)
     #out = self.hsv_threshold_output
     kernel = None
     anchor = (-1, -1)
     iterations = 1.0
     bordertype = cv2.BORDER_CONSTANT
     bordervalue = (-1)
-    sd = NetworkTables.getTable("powerball")
     
 
     #=====
     NetworkTables.initialize(server='roborio-5607-frc.local')
+    sd = NetworkTables.getTable("powerball")
   # cs2 = cs2.getInstance()
   # cs2.enableLogging()
 
