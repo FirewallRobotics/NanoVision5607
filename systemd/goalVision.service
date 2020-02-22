@@ -1,0 +1,12 @@
+[Unit]
+Description=GoalVision: Initialize the Goal Tape Vision Tracker
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/local/bin/goalvision.py
+Restart=always
+StartLimitInterval=10
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
