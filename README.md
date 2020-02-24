@@ -2,6 +2,7 @@
 
 ## Hardware Issues
 
+No longer an issue with updates
 WIFI
 * That WIFI dongle is flaky...
   * echo "blacklist rtl8192cu" | sudo tee -a /etc/modprobe.d/blacklist.conf
@@ -15,3 +16,7 @@ FAN
 ## Requirements
 
 * https://docs.nvidia.com/deeplearning/frameworks/install-tf-jetson-platform/index.html
+
+
+sudo usermod -aG docker $USER
+
