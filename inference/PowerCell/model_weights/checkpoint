@@ -1,6 +1,0 @@
-model_checkpoint_path: "/sly_task_data/results/00000009/model_weights/model.ckpt"
-all_model_checkpoint_paths: "/sly_task_data/results/00000005/model_weights/model.ckpt"
-all_model_checkpoint_paths: "/sly_task_data/results/00000006/model_weights/model.ckpt"
-all_model_checkpoint_paths: "/sly_task_data/results/00000007/model_weights/model.ckpt"
-all_model_checkpoint_paths: "/sly_task_data/results/00000008/model_weights/model.ckpt"
-all_model_checkpoint_paths: "/sly_task_data/results/00000009/model_weights/model.ckpt"
