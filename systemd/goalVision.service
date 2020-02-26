@@ -3,7 +3,7 @@ Description=GoalVision: Initialize the Goal Tape Vision Tracker
 After=multi-user.target
 
 [Service]
-ExecStart=/home/team5607/NanoVision5607/systemd/goalvision.py
+ExecStart=/home/team5607/NanoVision5607/opencv/goalVision.py
 Restart=always
 StartLimitInterval=10
 RestartSec=10

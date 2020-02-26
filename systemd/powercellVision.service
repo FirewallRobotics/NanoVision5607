@@ -3,7 +3,7 @@ Description=powercellVision: Initialize the PowerCell Vision Tracker
 After=multi-user.target
 
 [Service]
-ExecStart=/home/team5607/NanoVision5607/systemd/powercellcv.py
+ExecStart=/home/team5607/NanoVision5607/opencv/powercellVision.py
 Restart=always
 StartLimitInterval=10
 RestartSec=10
