@@ -161,7 +161,7 @@ def main():
                 print("X: " + repr(round(x, 1)) + " Y: " + repr(round(y, 1)) + " Radius: " + repr(round(radius, 1)))
 
             else:
-                print("WTF")
+                print("Nothing seen")
                 #let the RoboRio Know no target has been detected with -1
                 sd.putNumber('X', -1)
                 sd.putNumber('Y', -1)
