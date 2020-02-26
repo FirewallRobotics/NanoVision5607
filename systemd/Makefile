@@ -1,7 +1,7 @@
 INSTALL_PREFIX:=/etc/systemd/system
 
-TARGETS:=$(shell ls *.service)
-TARGETS:=$(addprefix ${INSTALL_PREFIX}/, ${TARGETS})
+SERVICES:=$(shell ls *.service)
+TARGETS:=$(addprefix ${INSTALL_PREFIX}/, ${SERVICES})
 all: ${TARGETS}
 
 echo:
@@ -10,3 +10,5 @@ echo:
 ${INSTALL_PREFIX}/%.service: %.service
 	chmod a+rx $^
 	cp $^ $@
+	systemctl enable $^
+
