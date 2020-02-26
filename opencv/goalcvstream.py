@@ -30,7 +30,7 @@ def main():
     blur_radius = 17
     blur_ksize = int(1 * round(blur_radius) + 1)
     #powercell = powercellcv()
-    camera = cs.UsbCamera("usbcam", 1)
+    camera = cs.UsbCamera("usbcam", 0)
     camera.setVideoMode(cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
 
    # mjpegServer = cs.MjpegServer("httpserver", 8081)
@@ -42,10 +42,10 @@ def main():
     cvsink.setSource(camera)
 
     cvSource = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
-    cvMjpegServer = cs.MjpegServer("cvhttpserver", 8082)
+    cvMjpegServer = cs.MjpegServer("cvhttpserver", 8081)
     cvMjpegServer.setSource(cvSource)
 
-    print("OpenCV output mjpg server listening at http://0.0.0.0:8082")
+    print("OpenCV output mjpg server listening at http://0.0.0.0:8081")
 
     test = np.zeros(shape=(HEIGHT, WIDTH, 3), dtype=np.uint8)
     flip = np.zeros(shape=(HEIGHT, WIDTH, 3), dtype=np.uint8)
