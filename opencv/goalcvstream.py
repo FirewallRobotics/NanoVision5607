@@ -9,11 +9,10 @@
 import cscore as cs
 import numpy as np
 import cv2
-from powercellcv import *
 from networktables import NetworkTables
 import argparse
 import os
-
+from goalpipeline import *
 
 
 
@@ -60,6 +59,7 @@ def main():
     #=====
     NetworkTables.initialize(server='roborio-5607-frc.local')
     sd = NetworkTables.getTable("goal")
+    goal = GoalPipeline()
   # cs2 = cs2.getInstance()
   # cs2.enableLogging()
 
@@ -87,18 +87,19 @@ def main():
         if time == 0:
             print("error:", cvsink.getError())
             continue
-
+        goal.process(frame)
+        cnts = goal.filter_contours_output
         #print("got frame at time", time, test.shape)
 
         #cv2.flip(test, flipCode=0, dst=flip)
         #filename=os.path.join("./capture2."+str(time)+".jpg")
         #cv2.imwrite(filename, frame)
-        out = cv2.cvtColor(frame, cv2.COLOR_BGR2HLS)
-        out = cv2.blur(out,(blur_ksize, blur_ksize))
-        out = cv2.inRange(out, (hue[0], sat[0], val[0]),  (hue[1], sat[1], val[1]))
-        out = cv2.dilate(out, kernel, anchor, iterations = 0)#, cv2.BORDER_CONSTANT , bordervalue)
-        out = cv2.erode(out, kernel, anchor, iterations = 0)#, cv2.BORDER_CONSTANT , bordervalue)
-        cnts, a = cv2.findContours(out, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        #out = cv2.cvtColor(frame, cv2.COLOR_BGR2HLS)
+        #out = cv2.blur(out,(blur_ksize, blur_ksize))
+        #out = cv2.inRange(out, (hue[0], sat[0], val[0]),  (hue[1], sat[1], val[1]))
+        #out = cv2.dilate(out, kernel, anchor, iterations = 0)#, cv2.BORDER_CONSTANT , bordervalue)
+        #out = cv2.erode(out, kernel, anchor, iterations = 0)#, cv2.BORDER_CONSTANT , bordervalue)
+        #cnts, a = cv2.findContours(out, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
         center = None
         boundRect=None
 
