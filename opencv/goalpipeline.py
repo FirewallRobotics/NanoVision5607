@@ -41,9 +41,9 @@ class GoalPipeline:
         self.cv_cvtcolor_output = None
 
         self.__rgb_threshold_input = self.cv_cvtcolor_output
-        self.__rgb_threshold_red = [16.80790960451977, 218.82978723404256]
-        self.__rgb_threshold_green = [108.05084745762713, 252.73936170212767]
-        self.__rgb_threshold_blue = [31.21468926553672, 92.23404255319149]
+        self.__rgb_threshold_red =   [80, 165]
+        self.__rgb_threshold_green = [240, 254]
+        self.__rgb_threshold_blue =  [250, 255]
 
         self.rgb_threshold_output = None
 

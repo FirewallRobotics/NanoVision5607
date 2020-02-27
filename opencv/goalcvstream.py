@@ -18,9 +18,9 @@ from goalpipeline import *
 
 
 def main():
-    WIDTH=320
-    HEIGHT=180
-    FPS=15
+    WIDTH=160
+    HEIGHT=90
+    FPS=10
     hue = [77,90]
     sat = [73,255]
     val = [188, 255]

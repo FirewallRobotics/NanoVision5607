@@ -229,7 +229,7 @@
     <language>Python</language>
     <className>GoalPipeline</className>
     <implementWpilibPipeline>false</implementWpilibPipeline>
-    <saveDir>/Users/mhale/GRIP</saveDir>
+    <saveDir>/Users/mhale/wpilib/2020/NanoVision5607/opencv</saveDir>
     <packageName></packageName>
     <moduleName>goalpipeline</moduleName>
   </codeGenerationSettings>
