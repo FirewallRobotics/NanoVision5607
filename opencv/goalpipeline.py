@@ -13,14 +13,14 @@ class GoalPipeline:
         """
 
         self.__blur_type = BlurType.Gaussian_Blur
-        self.__blur_radius = 6.603773584905662
+        self.__blur_radius = 1
 
         self.blur_output = None
 
         self.__cv_erode_0_src = self.blur_output
         self.__cv_erode_0_kernel = None
         self.__cv_erode_0_anchor = (-1, -1)
-        self.__cv_erode_0_iterations = 2.0
+        self.__cv_erode_0_iterations = 1.0
         self.__cv_erode_0_bordertype = cv2.BORDER_CONSTANT
         self.__cv_erode_0_bordervalue = (-1)
 
@@ -29,7 +29,7 @@ class GoalPipeline:
         self.__cv_dilate_0_src = self.cv_erode_0_output
         self.__cv_dilate_0_kernel = None
         self.__cv_dilate_0_anchor = (-1, -1)
-        self.__cv_dilate_0_iterations = 2.0
+        self.__cv_dilate_0_iterations = 6.0
         self.__cv_dilate_0_bordertype = cv2.BORDER_CONSTANT
         self.__cv_dilate_0_bordervalue = (-1)
 
@@ -41,7 +41,7 @@ class GoalPipeline:
         self.cv_cvtcolor_output = None
 
         self.__rgb_threshold_input = self.cv_cvtcolor_output
-        self.__rgb_threshold_red =   [80, 165]
+        self.__rgb_threshold_red =   [70, 170]
         self.__rgb_threshold_green = [240, 254]
         self.__rgb_threshold_blue =  [250, 255]
 
@@ -50,7 +50,7 @@ class GoalPipeline:
         self.__cv_dilate_1_src = self.rgb_threshold_output
         self.__cv_dilate_1_kernel = None
         self.__cv_dilate_1_anchor = (-1, -1)
-        self.__cv_dilate_1_iterations = 14.0
+        self.__cv_dilate_1_iterations = 1
         self.__cv_dilate_1_bordertype = cv2.BORDER_CONSTANT
         self.__cv_dilate_1_bordervalue = (-1)
 
@@ -59,7 +59,7 @@ class GoalPipeline:
         self.__cv_erode_1_src = self.cv_dilate_1_output
         self.__cv_erode_1_kernel = None
         self.__cv_erode_1_anchor = (-1, -1)
-        self.__cv_erode_1_iterations = 19.0
+        self.__cv_erode_1_iterations = 0
         self.__cv_erode_1_bordertype = cv2.BORDER_CONSTANT
         self.__cv_erode_1_bordervalue = (-1)
 
@@ -170,8 +170,8 @@ class GoalPipeline:
         Returns:
             A black and white numpy.ndarray.
         """
-        out = cv2.cvtColor(input, cv2.COLOR_BGR2RGB)
-        return cv2.inRange(out, (red[0], green[0], blue[0]),  (red[1], green[1], blue[1]))
+        #out = cv2.cvtColor(input, cv2.COLOR_BGR2RGB)
+        return cv2.inRange(input, (red[0], green[0], blue[0]),  (red[1], green[1], blue[1]))
 
     @staticmethod
     def __cv_dilate(src, kernel, anchor, iterations, border_type, border_value):
@@ -217,7 +217,7 @@ class GoalPipeline:
         else:
             mode = cv2.RETR_LIST
         method = cv2.CHAIN_APPROX_SIMPLE
-        contours, crap =cv2.findContours(input, mode=mode, method=method)
+        a, contours, crap =cv2.findContours(input, mode=mode, method=method)
         return contours
 
     @staticmethod

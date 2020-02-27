@@ -2,29 +2,44 @@
 import cv2
 import numpy
 import glob
+from goalpipeline import *
 
 def onmouse(k,x,y,s,p):
     global hsv
     if k==1:   # left mouse, print pixel at x,y
         print(hsv[y,x])
-
-for imageFile in glob.glob('./*.jpg'):
-    rawImage = cv2.imread(imageFile)
+cap = cv2.VideoCapture('test.mov')
+goal = GoalPipeline()
+while cap.isOpened():
+    ret, rawImage = cap.read()
+#for imageFile in glob.glob('./*.jpg'):
+#    rawImage = cv2.imread(imageFile)
+    goal.process(rawImage)
     cv2.imshow('Original Image',rawImage)
-    hsv = cv2.cvtColor(rawImage, cv2.COLOR_BGR2HLS)
-    red =   [80, 165]
-    green = [240, 254]
-    blue =  [250, 255]
-    cv2.namedWindow("hsv")
-    cv2.setMouseCallback("hsv",onmouse);
-    cv2.imshow('hsv',hsv)
-    mask = cv2.inRange(hsv, (red[0], green[0], blue[0]),  (red[1], green[1], blue[1]))
+    cv2.moveWindow('Original Image', 40,30) 
+    cv2.imshow("Blur", goal.blur_output)
+    cv2.moveWindow('Blur', 480,30) 
+    cv2.imshow('erode',goal.cv_erode_0_output)
+    cv2.moveWindow('erode', 40,480) 
+    cv2.imshow('dilate',goal.cv_dilate_0_output)
+    cv2.moveWindow('dilate', 480,480) 
+    cv2.imshow('Final',goal.cv_erode_1_output)
+    cv2.moveWindow('Final', 960,480) 
+
+    #hsv = cv2.cvtColor(rawImage, cv2.COLOR_BGR2HLS)
+    #red =   [80, 165]
+    #green = [240, 254]
+    #blue =  [250, 255]
+    #cv2.namedWindow("hsv")
+    #cv2.setMouseCallback("hsv",onmouse);
+    #cv2.imshow('hsv',hsv)
+    #mask = cv2.inRange(hsv, (red[0], green[0], blue[0]),  (red[1], green[1], blue[1]))
     #cv2.inRange(hsv, lower_green, upper_green)
-    res = cv2.bitwise_and(rawImage,rawImage,mask=mask)
-    cv2.imshow('MASK',res)
+    #res = cv2.bitwise_and(rawImage,rawImage,mask=mask)
+    #cv2.imshow('MASK',res)
     if cv2.waitKey() & 0xFF == ord('q'):
         break
-    cv2.destroyAllWindows()
+cv2.destroyAllWindows()
     
 # HSV   
 #[ 70   3 255]  
