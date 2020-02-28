@@ -23,6 +23,10 @@ while cap.isOpened():
     cv2.moveWindow('erode', 40,480) 
     cv2.imshow('dilate',goal.cv_dilate_0_output)
     cv2.moveWindow('dilate', 480,480) 
+    cv2.imshow('hsl', goal.cv_cvtcolor_output)
+    cv2.moveWindow('hsl', 960,30)
+    hue ,saturation ,value = cv2.split(goal.cv_cvtcolor_output)
+    cv2.imshow('Saturation Image',saturation)
     cv2.imshow('Final',goal.cv_erode_1_output)
     cv2.moveWindow('Final', 960,480) 
 

@@ -20,7 +20,7 @@ class GoalPipeline:
         self.__cv_erode_0_src = self.blur_output
         self.__cv_erode_0_kernel = None
         self.__cv_erode_0_anchor = (-1, -1)
-        self.__cv_erode_0_iterations = 1.0
+        self.__cv_erode_0_iterations = 2.0
         self.__cv_erode_0_bordertype = cv2.BORDER_CONSTANT
         self.__cv_erode_0_bordervalue = (-1)
 
@@ -217,7 +217,11 @@ class GoalPipeline:
         else:
             mode = cv2.RETR_LIST
         method = cv2.CHAIN_APPROX_SIMPLE
-        a, contours, crap =cv2.findContours(input, mode=mode, method=method)
+        if(cv2.__version__.startswith('3')):
+            a, contours, crap =cv2.findContours(input, mode=mode, method=method)
+        else:
+            contours, crap =cv2.findContours(input, mode=mode, method=method)
+
         return contours
 
     @staticmethod
