@@ -217,7 +217,7 @@ class GoalPipeline:
         else:
             mode = cv2.RETR_LIST
         method = cv2.CHAIN_APPROX_SIMPLE
-        a, contours, crap =cv2.findContours(input, mode=mode, method=method)
+        contours, crap =cv2.findContours(input, mode=mode, method=method)
         return contours
 
     @staticmethod

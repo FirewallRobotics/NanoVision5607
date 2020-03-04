@@ -20,7 +20,7 @@ from goalpipeline import *
 def main():
     WIDTH=160
     HEIGHT=90
-    FPS=10
+    FPS=15
     hue = [77,90]
     sat = [73,255]
     val = [188, 255]
@@ -41,7 +41,7 @@ def main():
     cvsink.setSource(camera)
 
     cvSource = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
-    cvMjpegServer = cs.MjpegServer("cvhttpserver", 8081)
+    cvMjpegServer = cs.MjpegServer("PowerCell", 8081)
     cvMjpegServer.setSource(cvSource)
 
     print("OpenCV output mjpg server listening at http://0.0.0.0:8081")
@@ -159,10 +159,10 @@ def main():
                 sd.putNumber('X',x)
                 sd.putNumber('Y',y)
                 sd.putNumber('R', radius)
-                print("X: " + repr(round(x, 1)) + " Y: " + repr(round(y, 1)) + " Radius: " + repr(round(radius, 1)))
+                #print("X: " + repr(round(x, 1)) + " Y: " + repr(round(y, 1)) + " Radius: " + repr(round(radius, 1)))
 
             else:
-                print("Nothing seen")
+                #print("Nothing seen")
                 #let the RoboRio Know no target has been detected with -1
                 sd.putNumber('X', -1)
                 sd.putNumber('Y', -1)

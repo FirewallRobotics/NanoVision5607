@@ -13,8 +13,8 @@ from powercellcv import *
 from networktables import NetworkTables
 
 def main():
-    WIDTH=320
-    HEIGHT=180
+    WIDTH=160
+    HEIGHT=90
     FPS=15
     hue = [9.712230215827338, 57.82664451107176]
     sat = [159.60172539934155, 255.0]
@@ -35,7 +35,7 @@ def main():
     cvsink.setSource(camera)
 
     cvSource = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
-    cvMjpegServer = cs.MjpegServer("cvhttpserver", 8082)
+    cvMjpegServer = cs.MjpegServer("Goal", 8082)
     cvMjpegServer.setSource(cvSource)
 
     print("OpenCV output mjpg server listening at http://0.0.0.0:8082")
@@ -108,17 +108,17 @@ def main():
 
 
             #if the dectected contour has a radius big enough, we will send it
-            if radius > 15:
+            if radius > 7:
                 #draw a circle around the target and publish values to smart dashboard
                 cv2.circle(frame, (int(x), int(y)), int(radius), (255,255,8), 2)
                 cv2.circle(frame, center, 3, (0,0,225), -1)
                 sd.putNumber('X',x)
                 sd.putNumber('Y',y)
                 sd.putNumber('R', radius)
-                print("X: " + repr(round(x, 1)) + " Y: " + repr(round(y, 1)) + " Radius: " + repr(round(radius, 1)))
+                #print("X: " + repr(round(x, 1)) + " Y: " + repr(round(y, 1)) + " Radius: " + repr(round(radius, 1)))
 
             else:
-                print("WTF")
+                #print("WTF")
                 #let the RoboRio Know no target has been detected with -1
                 sd.putNumber('X', -1)
                 sd.putNumber('Y', -1)
