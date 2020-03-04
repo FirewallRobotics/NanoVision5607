@@ -8,7 +8,6 @@ echo:
 	echo "${TARGETS}"
 
 ${INSTALL_PREFIX}/%.service: %.service
-	chmod a+rx $^
 	cp $^ $@
 	systemctl enable $^
 

@@ -1,11 +1,10 @@
 [Unit]
 Description=powersave Wifi Off: Turns off the power save mode on boot
-After=multi-user.target
+After=networking.service
 
 [Service]
-type=oneshot
+Type=oneshot
 ExecStart=/home/team5607/NanoVision5607/systemd/powersaveWifiOff.sh
 
 [Install]
-After=networking.service
 WantedBy=multi-user.target
