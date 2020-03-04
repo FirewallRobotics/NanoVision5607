@@ -13,8 +13,9 @@ from powercellcv import *
 from networktables import NetworkTables
 
 def main():
-    WIDTH=160
-    HEIGHT=90
+    SCALE=2
+    WIDTH=160*SCALE
+    HEIGHT=90*SCALE
     FPS=15
     hue = [9.712230215827338, 57.82664451107176]
     sat = [159.60172539934155, 255.0]
