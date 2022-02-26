@@ -3,6 +3,17 @@ import numpy as np
 
 import cscore as cs
 
+def adjust_gamma(image, gamma=1.0):
+
+   invGamma = 1.0 / gamma
+   table = np.array([((i / 255.0) ** invGamma) * 255
+      for i in np.arange(0, 256)]).astype("uint8")
+
+   return cv2.LUT(image, table)
+
+gamma = 0.5                                   # change the value here to get different result
+
+
 #vid = cv2.VideoCapture(0)
 ##camera server?
 SCALE=2
@@ -34,8 +45,8 @@ while True:
     if time == 0:
         print("error:", cvsink.getError())
         continue
-
-    image = cv2.cvtColor(imageorg, cv2.COLOR_BGR2HLS)
+    adjusted = adjust_gamma(imageorg, gamma=gamma)
+    image = cv2.cvtColor(adjusted, cv2.COLOR_BGR2HLS)
     image = cv2.inRange(image, (hue[0], lum[0], sat[0]),  (hue[1], lum[1], sat[1]))#dilate, then mask somehow,
     kernel = np.ones((5,5), np.uint8)
     mask = cv2.dilate(image, kernel, iterations = (int) (15 +0.5))
