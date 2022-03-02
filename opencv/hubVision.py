@@ -3,20 +3,9 @@ import numpy as np
 
 import cscore as cs
 
-def adjust_gamma(image, gamma=1.0):
-
-   invGamma = 1.0 / gamma
-   table = np.array([((i / 255.0) ** invGamma) * 255
-      for i in np.arange(0, 256)]).astype("uint8")
-
-   return cv2.LUT(image, table)
-
-gamma = 0.5                                   # change the value here to get different result
-
-
 #vid = cv2.VideoCapture(0)
 ##camera server?
-SCALE=2
+SCALE=4
 WIDTH=160*SCALE
 HEIGHT=90*SCALE
 FPS=15
@@ -24,6 +13,18 @@ FPS=15
 hue = [61.01694915254237, 87.44680851063829]
 sat = [84.03954802259886, 255.0]
 lum = [84.03954802259886, 223.35106382978722]
+
+hue = [16, 82]
+sat = [135, 255]
+lum = [115, 229]
+
+def adjust_gamma(image, gamma=1.0):
+
+   invGamma = 1.0 / gamma
+   table = np.array([((i / 255.0) ** invGamma) * 255
+      for i in np.arange(0, 256)]).astype("uint8")
+
+   return cv2.LUT(image, table)
 
 test = np.zeros(shape=(HEIGHT, WIDTH, 3), dtype=np.uint8)
 
@@ -39,19 +40,24 @@ cvMjpegServer = cs.MjpegServer("PowerCell", 8081)#here
 cvMjpegServer.setSource(cvSource)
 count = 0
 
+blur_radius = 1
+blur_ksize = int(2 * round(blur_radius) + 1)
 while True:
     count += 1
     time, imageorg = cvsink.grabFrame(test)
     if time == 0:
         print("error:", cvsink.getError())
         continue
-    adjusted = adjust_gamma(imageorg, gamma=gamma)
-    image = cv2.cvtColor(adjusted, cv2.COLOR_BGR2HLS)
+    image = cv2.blur(imageorg,(blur_ksize, blur_ksize))
+    image = adjust_gamma(imageorg, gamma=0.1)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2HLS)
     image = cv2.inRange(image, (hue[0], lum[0], sat[0]),  (hue[1], lum[1], sat[1]))#dilate, then mask somehow,
-    kernel = np.ones((5,5), np.uint8)
-    mask = cv2.dilate(image, kernel, iterations = (int) (15 +0.5))
+    contours, hierarchy = cv2.findContours(image=image, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_NONE)
+    #cvSource.putFrame(image)
+    #MDHkernel = np.ones((5,5), np.uint8)
+    #MDHmask = cv2.dilate(image, kernel, iterations=15)
 
-    image = cv2.bitwise_and(image, image, mask=mask)
+    #MDHimage = cv2.bitwise_and(image, image, mask=mask)
     #cv2.imwrite('source.jpg', image)
     
 
@@ -68,13 +74,12 @@ while True:
     #cv2.imwrite('image_thres1.jpg', thresh)
     #cv2.destroyAllWindows()
     # detect the contours on the binary image using cv2.CHAIN_APPROX_NONE
-    contours, hierarchy = cv2.findContours(image=image, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_NONE)
 
     # draw contours on the original image + dilate the image
     image_copy = imageorg.copy()
-    kernel = np.ones((5,5), np.uint8)
+    #MDHkernel = np.ones((5,5), np.uint8)
     #cv2.dilate(image_copy, kernel, iterations = (int) (15 +0.5))
-    cv2.drawContours(image=image_copy, contours=contours, contourIdx=-1, color=(0, 255, 0), thickness=2, lineType=cv2.LINE_AA)
+    #cv2.drawContours(image=image_copy, contours=contours, contourIdx=-1, color=(0, 255, 0), thickness=2, lineType=cv2.LINE_AA)
 
     # see the results
     #cv2.imshow('None approximation', image_copy)
@@ -91,6 +96,7 @@ while True:
         pass
 
 
+    cvSource.putFrame(image_copy)
 
     ##for i in contours: ##had i++, go back through
     ##
@@ -119,6 +125,5 @@ while True:
 
     #cv2.imwrite(f'contours_none_image{count}.jpg', image_copy) ##goal vision to push to camserver
     #cv2.waitKey(0)
-    cvSource.putFrame(image_copy)
 
     ###
