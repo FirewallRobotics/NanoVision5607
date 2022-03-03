@@ -18,13 +18,14 @@ hue = [16, 82]
 sat = [135, 255]
 lum = [115, 229]
 
-def adjust_gamma(image, gamma=1.0):
+def adjust_gamma(image, gamma=1.0, iterations=1):
 
    invGamma = 1.0 / gamma
    table = np.array([((i / 255.0) ** invGamma) * 255
       for i in np.arange(0, 256)]).astype("uint8")
-
-   return cv2.LUT(image, table)
+   for i in range(iterations):
+       image = cv2.LUT(image, table)
+   return image
 
 test = np.zeros(shape=(HEIGHT, WIDTH, 3), dtype=np.uint8)
 
@@ -35,9 +36,12 @@ cvsink = cs.CvSink("cvsink")
 cvsink.setSource(camera)
 
 cvSource = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
+cvSourceMid = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
 
 cvMjpegServer = cs.MjpegServer("PowerCell", 8081)#here
 cvMjpegServer.setSource(cvSource)
+cvMjpegServerMid = cs.MjpegServer("PowerCell", 8082)#here
+cvMjpegServerMid.setSource(cvSourceMid)
 count = 0
 
 blur_radius = 1
@@ -49,15 +53,15 @@ while True:
         print("error:", cvsink.getError())
         continue
     image = cv2.blur(imageorg,(blur_ksize, blur_ksize))
-    image = adjust_gamma(imageorg, gamma=0.1)
+    #image = adjust_gamma(imageorg, gamma=0.4, iterations=20)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2HLS)
     image = cv2.inRange(image, (hue[0], lum[0], sat[0]),  (hue[1], lum[1], sat[1]))#dilate, then mask somehow,
+    kernel = np.ones((5,5), np.uint8)
+    mask = cv2.dilate(image, kernel, iterations=15)
+    image = cv2.bitwise_and(image, image, mask=mask)
     contours, hierarchy = cv2.findContours(image=image, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_NONE)
-    #cvSource.putFrame(image)
-    #MDHkernel = np.ones((5,5), np.uint8)
-    #MDHmask = cv2.dilate(image, kernel, iterations=15)
+    cvSourceMid.putFrame(image)
 
-    #MDHimage = cv2.bitwise_and(image, image, mask=mask)
     #cv2.imwrite('source.jpg', image)
     # read the image
     #image = cv2.imread('goal.png')
