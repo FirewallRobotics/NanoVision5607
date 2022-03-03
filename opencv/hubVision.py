@@ -58,8 +58,8 @@ while True:
     image = cv2.inRange(image, (hue[0], lum[0], sat[0]),  (hue[1], lum[1], sat[1]))#dilate, then mask somehow,
     contours, hierarchy = cv2.findContours(image=image, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_NONE)
     kernel = np.ones((5,5), np.uint8)
-    mask = cv2.dilate(image, kernel, iterations=3)
-    cvSourceMid.putFrame(mask)
+    mask = cv2.dilate(image, kernel, iterations=15)
+    cvSourceMid.putFrame(image)
 
     #MDHimage = cv2.bitwise_and(image, image, mask=mask)
     #cv2.imwrite('source.jpg', image)
