@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-
+from networktables import NetworkTables
 import cscore as cs
 
 #vid = cv2.VideoCapture(0)
