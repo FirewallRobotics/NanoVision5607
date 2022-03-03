@@ -56,10 +56,10 @@ while True:
     #image = adjust_gamma(imageorg, gamma=0.4, iterations=20)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2HLS)
     image = cv2.inRange(image, (hue[0], lum[0], sat[0]),  (hue[1], lum[1], sat[1]))#dilate, then mask somehow,
-    contours, hierarchy = cv2.findContours(image=image, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_NONE)
     kernel = np.ones((5,5), np.uint8)
     mask = cv2.dilate(image, kernel, iterations=15)
     image = cv2.bitwise_and(image, image, mask=mask)
+    contours, hierarchy = cv2.findContours(image=image, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_NONE)
     cvSourceMid.putFrame(image)
 
     #cv2.imwrite('source.jpg', image)
