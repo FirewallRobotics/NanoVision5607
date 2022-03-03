@@ -59,8 +59,6 @@ while True:
 
     #MDHimage = cv2.bitwise_and(image, image, mask=mask)
     #cv2.imwrite('source.jpg', image)
-    
-
     # read the image
     #image = cv2.imread('goal.png')
 
@@ -92,6 +90,13 @@ while True:
         biggest_contour = max(contour_sizes, key=lambda x: x[0])[1]
         x,y,w,h = cv2.boundingRect(biggest_contour)
         image_copy = cv2.rectangle(image_copy, (x,y),(x+w,y+h), color=(0, 255, 0))
+            NetworkTables.initialize(server='roborio-5607-frc.local')##change to be the IP adress of computer
+            sd1 = NetworkTables.getTable("hub")
+            sd1.putNumber('x_min', x)  ## tuple
+            sd1.putNumber('y_min', y) #tuple
+            sd1.putNumber('x_max',x+w)
+            sd1.putNumber('y_max',y+h)
+
     except ValueError:
         pass
 
