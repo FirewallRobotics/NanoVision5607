@@ -29,7 +29,12 @@ def adjust_gamma(image, gamma=1.0, iterations=1):
 
 test = np.zeros(shape=(HEIGHT, WIDTH, 3), dtype=np.uint8)
 
-camera = cs.UsbCamera("usbcam", 0)#1, devcam or vid
+cameras = {
+        "hub": "/dev/v4l/by-id/usb-046d_HD_Pro_Webcam_C920_E26E767F-video-index0",
+        "cargo": "/dev/v4l/by-id/usb-Microsoft_Microsoft®_LifeCam_HD-3000-video-index0"
+    }
+    ##cvsink, cvSource = setupSinkSource(0,"Cargo", 8082, WIDTH, HEIGHT, FPS)
+camera = cs.UsbCamera("usbcam", cameras["hub"])#1, devcam or vid
 camera.setVideoMode(cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
 
 cvsink = cs.CvSink("cvsink")
