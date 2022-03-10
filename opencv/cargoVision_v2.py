@@ -116,17 +116,17 @@ def main():
     cvMjpegServer.setSource(cvSource)
     cargo={
       "blue": {
-          "hue": [92, 110],
-          "sat": [108, 230],
-          "val": [48, 255],
+          "hue": [94.5, 107],
+          "sat": [96.9, 201.45],
+          "val": [53.55, 255],
           "color": (255,0,0) # RGB
-      },
-        "red":  {
-            "hue":  [147, 180],
-            "sat": [113, 230.0],
-            "val": [175, 255.0],
-            "color": (0,0,255) # RGB
-        }
+      } #,
+        #"red":  {
+        #    "hue":  [8, 180],
+        #    "sat": [112.2, 216.0],
+        #    "val": [81.6, 252.45],
+        #    "color": (0,0,255) # RGB
+        #}
     }
 
  
@@ -155,6 +155,8 @@ def main():
                 data = cargoProcess(image, hue=cargo[label]["hue"],sat=cargo[label]["sat"],val=cargo[label]["val"])
                 centers = data[0]
                 rad = data[1]
+                image = data[2]
+                cvSourceMid.putFrame(image)
                 # Now draw circles on the original image
                 frame = drawCircle(frame, centers, rad, color=cargo[label]["color"], minRadius = 7)
                 team5607_cargo.updateTable({f"X_{label}":centers[0], f"Y_{label}":centers[1], f"R_{label}":rad})
