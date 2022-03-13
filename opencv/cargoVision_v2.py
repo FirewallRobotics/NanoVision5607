@@ -5,20 +5,27 @@ import numpy as np
 import cv2
 from networktables import NetworkTables
 
-def preprocess(frame,blur_radius=10):
-
+def preprocess(frame,blur_radius=1):
+    # Images are loaded as BGR
+    # assign red channel to zeros
+    #frame[:,:,2] = np.ones([frame.shape[0], frame.shape[1]])
+    # 0 = B, 1=G
+    #frame[:,:,1] = np.zeros([frame.shape[0], frame.shape[1]])
     out = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     return blurImage(out,blur_radius)
 
 def cargoProcess(frame, hue, sat, val):
     kernel = None
     anchor = (-1, -1)
+    borderValue = (-1)
     out = cv2.inRange(frame, (hue[0], sat[0], val[0]),  (hue[1], sat[1], val[1]))
-    #out = cv2.erode(frame, kernel, anchor, iterations = 2)
-    #out = cv2.dilate(out, kernel, anchor, iterations = 3)#, cv2.BORDER_CONSTANT , bordervalue)########
-    #out = cv2.erode(out, kernel, anchor, iterations = 2)#, cv2.BORDER_CONSTANT , bordervalue)
 
-    cnts, a = cv2.findContours(out, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    out = cv2.dilate(out, kernel, anchor, iterations = 3, borderType = cv2.BORDER_CONSTANT , borderValue = borderValue) ########
+    out = cv2.erode(out, kernel, anchor, iterations = 2, borderType = cv2.BORDER_CONSTANT , borderValue = borderValue)
+    
+    out = cv2.erode(out, kernel, anchor, iterations = 2, borderType = cv2.BORDER_CONSTANT , borderValue = borderValue)
+
+    cnts, a = cv2.findContours(out, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     center = [0,0]
     data = [ [0,0], 0]
     #only do stuff if a single contor was found
@@ -26,7 +33,10 @@ def cargoProcess(frame, hue, sat, val):
         #find the largest contour in the mask, then use it
         #to compute the minimum enclosing circle and centroid
         c = max(cnts, key=cv2.contourArea)
+        
         ((x,y), radius) = cv2.minEnclosingCircle(c)
+        
+
         M = cv2.moments(c)
         ## v wouldn't run after the return?
         try:
@@ -36,10 +46,10 @@ def cargoProcess(frame, hue, sat, val):
         except ZeroDivisionError:
             center = [0,0]
             data = [center, 0]
-        
-    data.append(out)   
+
+    data.append(out)
     return data
-        
+
 class _team5607_NetworkTables:
     def __init__(self, server="roborio-5607-frc.local", tableName="cargo", tableKeys=[]):
         self.server=server
@@ -82,9 +92,10 @@ def drawCircle(frame, center, radius, color, minRadius = 7):
 
     '''
     if radius > minRadius:
+
                     #draw a circle around the target and publish values to smart dashboard
         cv2.circle(frame, center, int(radius), color, 2)### change here color is a R
-
+        print(f'{center}, r:{radius}')
     return frame
 
 
@@ -116,20 +127,22 @@ def main():
     cvMjpegServer.setSource(cvSource)
     cargo={
       "blue": {
-          "hue": [94.5, 107],
-          "sat": [96.9, 201.45],
-          "val": [53.55, 255],
-          "color": (255,0,0) # RGB
-      } #,
-        #"red":  {
-        #    "hue":  [8, 180],
-        #    "sat": [112.2, 216.0],
-        #    "val": [81.6, 252.45],
-        #    "color": (0,0,255) # RGB
-        #}
+          "hue": [83, 120],
+          "sat": [112, 255],
+          "val": [110, 255],
+          "color": (255,0,0), # RGB
+          "image": "opencv/source_real_blue.jpeg"
+      } ,
+        "red":  {
+           "hue":  [121, 180],
+            "sat": [135, 255],
+            "val": [108, 255],
+            "color": (0,0,255), # RGB
+            "image": "opencv/source_real_red.jpeg"
+        }
     }
 
- 
+
     # For each cargo we are going to need to create an x,y,r piece of data
     cargoData=["X_", "Y_", "R_"]
     # This is nested list comprehension.  Intent is to get X|Y|R_{label}
@@ -149,16 +162,19 @@ def main():
         image=preprocess(image)
         if count == 10:
             cv2.imwrite('source.jpg', frame)
-        
+
         for label in cargo.keys():
                 # We only want to get the x,y,r based on a clean preprocessed image ONLY.
                 data = cargoProcess(image, hue=cargo[label]["hue"],sat=cargo[label]["sat"],val=cargo[label]["val"])
                 centers = data[0]
                 rad = data[1]
-                image = data[2]
-                cvSourceMid.putFrame(image)
+                #image = data[2]
+                
                 # Now draw circles on the original image
-                frame = drawCircle(frame, centers, rad, color=cargo[label]["color"], minRadius = 7)
+                frame = drawCircle(frame, centers, rad, color=cargo[label]["color"], minRadius = 1)
+
+                if label == "blue":
+                    cvSourceMid.putFrame(frame)
                 team5607_cargo.updateTable({f"X_{label}":centers[0], f"Y_{label}":centers[1], f"R_{label}":rad})
 
         cvSource.putFrame(frame)
