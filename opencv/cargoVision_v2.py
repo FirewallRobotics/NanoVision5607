@@ -95,7 +95,7 @@ def drawCircle(frame, center, radius, color, minRadius = 7):
 
                     #draw a circle around the target and publish values to smart dashboard
         cv2.circle(frame, center, int(radius), color, 2)### change here color is a R
-        print(f'{center}, r:{radius}')
+        #print(f'{center}, r:{radius}')
     return frame
 
 
@@ -172,9 +172,6 @@ def main():
                 
                 # Now draw circles on the original image
                 frame = drawCircle(frame, centers, rad, color=cargo[label]["color"], minRadius = 1)
-
-                if label == "blue":
-                    cvSourceMid.putFrame(frame)
                 team5607_cargo.updateTable({f"X_{label}":centers[0], f"Y_{label}":centers[1], f"R_{label}":rad})
 
         cvSource.putFrame(frame)
