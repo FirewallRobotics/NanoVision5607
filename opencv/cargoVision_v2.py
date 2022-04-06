@@ -101,7 +101,7 @@ def drawCircle(frame, center, radius, color, minRadius = 7):
 
 
 def main():
-    SCALE=2
+    SCALE=4
     WIDTH=160*SCALE
     HEIGHT=90*SCALE
     # 160x90 is the smallest, we can use SCALE to pick larger sizes
@@ -123,7 +123,7 @@ def main():
     #cvMjpegServerMid = cs.MjpegServer("PowerCell", 8082)#here
     #cvMjpegServerMid.setSource(cvSourceMid)
 
-    cvMjpegServer = cs.MjpegServer("Cargo", 8081)#here
+    cvMjpegServer = cs.MjpegServer("Cargo", 5801)#here
     cvMjpegServer.setSource(cvSource)
     cargo={
       "blue": {
