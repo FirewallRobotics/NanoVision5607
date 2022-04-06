@@ -43,12 +43,12 @@ cvsink = cs.CvSink("cvsink")
 cvsink.setSource(camera)
 
 cvSource = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
-#cvSourceMid = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
+cvSourceMid = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
 
 cvMjpegServer = cs.MjpegServer("Hub", 5803)#here
 cvMjpegServer.setSource(cvSource)
-#cvMjpegServerMid = cs.MjpegServer("PowerCell", 8082)#here
-#cvMjpegServerMid.setSource(cvSourceMid)
+cvMjpegServerMid = cs.MjpegServer("HubMid", 5802)#here
+cvMjpegServerMid.setSource(cvSourceMid)
 count = 0
 
 blur_radius = 1
@@ -60,7 +60,7 @@ while True:
         print("error:", cvsink.getError())
         continue
     
-    cv2.imwrite('/home/team5607/production/NanoVision5607/source.jpg', imageorg)
+    #cv2.imwrite('/home/team5607/production/NanoVision5607/source.jpg', imageorg)
 
     image = cv2.blur(imageorg,(blur_ksize, blur_ksize))
     #image = adjust_gamma(imageorg, gamma=0.4, iterations=20)

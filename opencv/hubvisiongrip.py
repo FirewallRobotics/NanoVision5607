@@ -42,7 +42,7 @@ class Hub:
         self.__cv_dilate_1_src = self.hsl_threshold_output
         self.__cv_dilate_1_kernel = None
         self.__cv_dilate_1_anchor = (-1, -1)
-        self.__cv_dilate_1_iterations = 5.0
+        self.__cv_dilate_1_iterations = 25.0
         self.__cv_dilate_1_bordertype = cv2.BORDER_CONSTANT
         self.__cv_dilate_1_bordervalue = (-1)
 
@@ -78,6 +78,11 @@ class Hub:
         # Step CV_dilate1:
         self.__cv_dilate_1_src = self.hsl_threshold_output
         (self.cv_dilate_1_output) = self.__cv_dilate(self.__cv_dilate_1_src, self.__cv_dilate_1_kernel, self.__cv_dilate_1_anchor, self.__cv_dilate_1_iterations, self.__cv_dilate_1_bordertype, self.__cv_dilate_1_bordervalue)
+        self.out = cv2.erode(self.cv_dilate_1_output, None, (-1, -1), iterations = 10, borderType = cv2.BORDER_CONSTANT , borderValue = (-1))
+
+        return self.out
+
+    def findContours(self):
 
         # Step Find_Contours0:
         self.__find_contours_input = self.cv_dilate_1_output
