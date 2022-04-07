@@ -32,10 +32,9 @@ cvMjpegServerMid = cs.MjpegServer("hubPipeline`", 8082)#here
 cvMjpegServerMid.setSource(cvSourceMid)
 count = 0
 
-blur_radius = 1
+
 hubimage = Hub()
 
-blur_ksize = int(2 * round(blur_radius) + 1)
 while True:
     count += 1
     time, imageorg = cvsink.grabFrame(test)

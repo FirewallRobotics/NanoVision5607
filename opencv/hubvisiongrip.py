@@ -85,7 +85,7 @@ class Hub:
     def findContours(self):
 
         # Step Find_Contours0:
-        self.__find_contours_input = self.cv_dilate_1_output
+        self.__find_contours_input = self.out
         (self.find_contours_output) = self.__find_contours(self.__find_contours_input, self.__find_contours_external_only)
         return self.find_contours_output
 
