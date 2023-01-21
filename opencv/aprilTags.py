@@ -1,6 +1,7 @@
 import apriltag
 import argparse
 import cv2
+from networktables import NetworkTables
 
 def area(ptA, ptB, ptC, ptD):
   """Finds the area of the apriltag.
@@ -62,5 +63,9 @@ ap.add_argument("-i", "--image", required=True,
   print("[INFO] tag family: {}".format(tagFamily))
   
 # show the output image after AprilTag detection
-cv2.imshow("Image", image)
-cv2.waitKey(0)
+ NetworkTables.initialize(server='roborio-5607-frc.local')
+ sd1 = NetworkTables.getTable("apriltag")
+ sd1.putNumber('x_min', x)  ## tuple
+ sd1.putNumber('y_min', y) #tuple
+ sd1.putNumber('x_max',x+w)
+ sd1.putNumber('y_max',y+h)
