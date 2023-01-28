@@ -55,7 +55,8 @@ ap.add_argument("-i", "--image", required=True,
   # draw the center (x, y)-coordinates of the AprilTag
   (cX, cY) = (int(r.center[0]), int(r.center[1]))
   cv2.circle(image, (cX, cY), 5, (0, 0, 255), -1)
-  
+  ID = r.tag_id
+           
   # draw the tag family on the image
   tagFamily = r.tag_family.decode("utf-8")
   cv2.putText(image, tagFamily, (ptA[0], ptA[1] - 15),
@@ -71,3 +72,4 @@ ap.add_argument("-i", "--image", required=True,
  sd1.putNumber('Point D', ptD)
  sd1.putNumber('Center X', cX)
  sd1.putNumber('Center Y', cY)
+ sd1.putNumber('ID', ID)
