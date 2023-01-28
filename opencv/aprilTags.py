@@ -65,7 +65,9 @@ ap.add_argument("-i", "--image", required=True,
 # show the output image after AprilTag detection
  NetworkTables.initialize(server='roborio-5607-frc.local')
  sd1 = NetworkTables.getTable("apriltag")
- sd1.putNumber('x_min', x)  ## tuple
- sd1.putNumber('y_min', y) #tuple
- sd1.putNumber('x_max',x+w)
- sd1.putNumber('y_max',y+h)
+ sd1.putNumber('Point A', ptA)  ## tuple
+ sd1.putNumber('Point B', ptB) #tuple
+ sd1.putNumber('Point C', ptC)
+ sd1.putNumber('Point D', ptD)
+ sd1.putNumber('Center X', cX)
+ sd1.putNumber('Center Y', cY)
