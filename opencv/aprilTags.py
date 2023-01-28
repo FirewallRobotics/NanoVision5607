@@ -17,6 +17,30 @@ def area(ptA, ptB, ptC, ptD):
   return area
   
 # construct the argument parser and parse the arguments
+
+####thinking here
+cameras = {
+        "cone": "/dev/v4l/by-id/usb-EMEET_HD_Webcam_eMeet_C960_SN0001-video-index0",
+        "cargo": "/dev/v4l/by-id/usb-Microsoft_Microsoft®_LifeCam_HD-3000-video-index0"
+    }
+camera = cs.UsbCamera("usbcam", cameras["cone"])#1, devcam or vid
+camera.setVideoMode(cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
+
+cvsink = cs.CvSink("cvsink")
+cvsink.setSource(camera)
+
+cvSource = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
+cvSourceMid = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
+
+cvMjpegServer = cs.MjpegServer("cone", 5802)#here
+cvMjpegServer.setSource(cvSource)
+cvMjpegServerMid = cs.MjpegServer("conePipeline`", 8082)#here #not too sure
+cvMjpegServerMid.setSource(cvSourceMid)
+
+###end of thinking
+
+
+
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", required=True,
   help="path to input image containing AprilTag")
