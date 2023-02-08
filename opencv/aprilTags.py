@@ -2,6 +2,9 @@ import apriltag
 import argparse
 import cv2
 from networktables import NetworkTables
+import AprilTagPoseEstimator
+import Transform3d
+import Rotation3d
 
 def area(ptA, ptB, ptC, ptD):
   """Finds the area of the apriltag.
@@ -58,6 +61,9 @@ ap.add_argument("-i", "--image", required=True,
  detector = apriltag.Detector(options)
  results = detector.detect(gray)
  print("[INFO] {} total AprilTags detected".format(len(results)))
+       
+poseEstConfig = AprilTagPoseEstimator.Config(0,0,0,0,0) #need numbers
+estimator = AprilTagPoseEstimator(poseEstConfig)
  
  # loop over the AprilTag detection results
  for r in results:
@@ -87,6 +93,10 @@ ap.add_argument("-i", "--image", required=True,
     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
   print("[INFO] tag family: {}".format(tagFamily))
   
+  pose = estimator.estimate(r)
+  rot = pose.getRotation()
+   
+           
 # show the output image after AprilTag detection
  NetworkTables.initialize(server='roborio-5607-frc.local')
  sd1 = NetworkTables.getTable("apriltag")
