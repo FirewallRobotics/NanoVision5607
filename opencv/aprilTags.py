@@ -43,6 +43,29 @@ cvMjpegServerMid.setSource(cvSourceMid)
 ###end of thinking
 
 
+###Implimentation of Camera Calibration code
+chessboardSize = (24,17)
+frameSize = (1440,1080)
+
+
+
+# termination criteria
+criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
+
+
+# prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
+objp = np.zeros((chessboardSize[0] * chessboardSize[1], 3), np.float32)
+objp[:,:2] = np.mgrid[0:chessboardSize[0],0:chessboardSize[1]].T.reshape(-1,2)
+
+size_of_chessboard_squares_mm = 20
+objp = objp * size_of_chessboard_squares_mm
+
+
+# Arrays to store object points and image points from all the images.
+objpoints = [] # 3d point in real world space
+imgpoints = [] # 2d points in image plane.
+
+### End of implimentation
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", required=True,
