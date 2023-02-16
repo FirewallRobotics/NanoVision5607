@@ -25,7 +25,7 @@ def area(ptA, ptB, ptC, ptD):
 ####thinking here
 cameras = {
         "apriltag": "/dev/v4l/by-id/usb-EMEET_HD_Webcam_eMeet_C960_SN0001-video-index0",
-        "apriltag2.0": "/dev/v4l/by-id/usb-Microsoft_Microsoft®_LifeCam_HD-3000-video-index0"
+        "mircosoft_powerpoints": "/dev/v4l/by-id/usb-Microsoft_Microsoft®_LifeCam_HD-3000-video-index0"
     }
 camera = cs.UsbCamera("usbcam", cameras["cone"])#1, devcam or vid
 camera.setVideoMode(cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
