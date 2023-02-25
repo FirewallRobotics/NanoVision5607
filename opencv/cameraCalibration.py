@@ -5,7 +5,7 @@ import opencv
 
 ## adding a camera streaming
 
-vid = cv2.VideoCapture(0))
+vid = cv2.VideoCapture(0)
 
 ################ FIND CHESSBOARD CORNERS - OBJECT POINTS AND IMAGE POINTS #############################
 
