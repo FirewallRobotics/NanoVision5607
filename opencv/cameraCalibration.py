@@ -1,8 +1,11 @@
 import numpy as np
 import cv2 as cv
 import glob
+import opencv
 
+## adding a camera streaming
 
+vid = cv2.VideoCapture(0))
 
 ################ FIND CHESSBOARD CORNERS - OBJECT POINTS AND IMAGE POINTS #############################
 
@@ -28,11 +31,12 @@ objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
 
 
-images = glob.glob('*.png')
+#images = glob.glob('*.png')
 
-for image in images:
-
-    img = cv.imread(image)
+#for image in images:
+while(True):
+    ret, img = vid.read()
+    #img = cv.imread(images)
     gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
     # Find the chess board corners
