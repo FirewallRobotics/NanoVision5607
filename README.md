@@ -1,5 +1,14 @@
 # NanoVision5607
 
+## General Jetson Setup
+* When using Headless setup to update code and background services power needs to be provided by the barrel connection. Jumper needs to be on power pins. Micro Usb is used to connect laptop up by terminal program like Putty. See Nano developer startup guide for details.
+ https://developer.nvidia.com/embedded/learn/get-started-jetson-nano-devkit#setup
+
+* use "systcl enable <application.service>" command to enable background services for robot
+* use "sysctl disable <application.service>" command to disable background services
+* use "sysctl list-units | grep team5607" to find background services for robot
+
+
 ## Hardware Issues
 
 No longer an issue with updates
