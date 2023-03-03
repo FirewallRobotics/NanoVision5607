@@ -4,7 +4,43 @@ from networktables import NetworkTables
 import cscore as cs
 #ßimport cubevisiongrip
 from cubevisiongrip import Cube
+ 
+ def cubeProcess(frame, hue, sat, val):
+            ''' Adds the filters to the image
+            
+            args:
+            frame - 
+            hue - The hue of the cube.
+            sat - The saturation of the cube.
+            val - The value of the cube.
+            
+            returns:
+            '''
+  
+        kernel = None
+        anchor = (-1, -1)
+        borderValue = (-1)
+        out = cv2.inRange(frame, (hue[0], sat[0], val[0]), (hue[1], sat[1], val[1]) #threshold
+        out = cv2.erode(out, kernel, anchor, iterations = 7.5, borderType = cv2.BORDER_CONSTANT, borderValue) #erode
+        out = cv2.dilate(out, kernel, anchor, iterations = 17, borderType = cv2.BORDER_CONSTANT, borderValue) #dilate
+        cents, a = cv2.findContours(out, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE) #Finding Contours
+        
+        center = [0,0]
+        data = [[0,0], 0]
+          # only if a single contor was founded.
+        if len(cnts) > 0:
+             # find the largest contour then use it.
+             # to compute the minimum enclosing circle and centroid.
+          c = max(cnts, key = cv2.contourArea)
+          ((x,y)), radius) = cv2.minEnclosingCircle(c)
+          M = cv2.moments(c)
+          try:  
+                center = (int(M["m10"] / M["m00"], int (M["m01"] / M["m00"]))
+                data = [center, radius]
 
+          except ZeroDivisionError:
+              center = [0,0]
+              data = [center, 0]
 
 SCALE=1
 WIDTH=160*SCALE
