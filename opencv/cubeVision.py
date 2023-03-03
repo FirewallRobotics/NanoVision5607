@@ -41,6 +41,22 @@ from cubevisiongrip import Cube
           except ZeroDivisionError:
               center = [0,0]
               data = [center, 0]
+                          
+def drawCircle(frame, center, radius, color, minRadius = 7):
+    '''
+    frame = image
+    center = (x,y)
+    radius = int
+    color = (R,G,B)
+    
+    '''
+    if radius > minRadius:
+                          
+                          #draw a circle around the target and publish values to smart dashboard
+       cv2.circle(frame, center, int(radius), color, 2)### change here color is a R
+       #print(f'{center}, r:{radius}')
+    return frame
+       
 
 SCALE=1
 WIDTH=160*SCALE
