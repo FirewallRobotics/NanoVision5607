@@ -15,6 +15,7 @@ from cubevisiongrip import Cube
             val - The value of the cube.
             
             returns:
+             data - The list of the filters
             '''
   
         kernel = None
@@ -23,7 +24,7 @@ from cubevisiongrip import Cube
         out = cv2.inRange(frame, (hue[0], sat[0], val[0]), (hue[1], sat[1], val[1]) #threshold
         out = cv2.erode(out, kernel, anchor, iterations = 7.5, borderType = cv2.BORDER_CONSTANT, borderValue) #erode
         out = cv2.dilate(out, kernel, anchor, iterations = 17, borderType = cv2.BORDER_CONSTANT, borderValue) #dilate
-        cents, a = cv2.findContours(out, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE) #Finding Contours
+        cnts, a = cv2.findContours(out, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE) #Finding Contours
         
         center = [0,0]
         data = [[0,0], 0]
@@ -41,6 +42,8 @@ from cubevisiongrip import Cube
           except ZeroDivisionError:
               center = [0,0]
               data = [center, 0]
+        data.append(out)
+        return data
                           
 def drawCircle(frame, center, radius, color, minRadius = 7):
     '''
@@ -86,7 +89,12 @@ count = 0
 
 
 cubeimage = Cube()
-
+'''
+hue = [116.54676258992805, 140.2716468590832]
+sat = [87.14028776978417, 255.0]
+val = [114.65827338129496, 255.0]
+color = (0, 255, 0)
+'''                          
 while True:
     count += 1
     time, imageorg = cvsink.grabFrame(test)
@@ -103,15 +111,14 @@ while True:
     NetworkTables.initialize(server='roborio-5607-frc.local')##change to be the IP adress of computer
     # mrPhilips laptop # NetworkTables.initialize(server='192.168.1.64')##change to be the IP adress of computer
     try:
-        biggest_contour = max(contour_sizes, key=lambda x: x[0])[1]
-        x,y,w,h = cv2.boundingRect(biggest_contour)
-        print(f'{x}, {y}, {x+w}, {y+h}')
-        image_copy = cv2.rectangle(image_copy, (x,y),(x+w,y+h), color=(0, 255, 0))
-        sd1 = NetworkTables.getTable("cone")
-        sd1.putNumber('x_min', x)  ## tuple
-        sd1.putNumber('y_min', y) #tuple
-        sd1.putNumber('x_max',x+w)
-        sd1.putNumber('y_max',y+h)
+        data = cubeProcess(imageorg, hue, sat, val)
+        center = data[0]
+        radius = data[1]
+        #image = data[2]
+        sd1 = NetworkTables.getTable("cube")
+        sd1.putNumber("Center", center)  ## tuple
+        sd1.putNumber("Raidus", radius) #tuple
+
 
     except ValueError:
         pass
