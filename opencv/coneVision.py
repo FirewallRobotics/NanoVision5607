@@ -16,6 +16,7 @@ def coneProcess(frame, hue, sat, val):
         val - The value of the cone.
         
         returns:
+                data- The list of filters.
         '''
         kernel = None
         anchor = (-1,-1)
@@ -23,7 +24,7 @@ def coneProcess(frame, hue, sat, val):
         out = cv2.inRange(frame, (hue[0], sat[0], val[0]), (hue[1], sat[1], val[1]) #threshold
         out = cv2.erode(out, kernel, anchor, iterations = 3, borderType = cv2.BORDER_CONSTANT, borderValue) #erode
         out = cv2.dilate(out, kernel, anchor, iterations = 8, borderType = cv2.BORDER_CONSTANT, borderValue) #dilate
-        cents, a = cv2.findContours(out, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE) #Finding Contours
+        cnts, a = cv2.findContours(out, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE) #Finding Contours
                           
         center = [0,0]
         data = [[0,0], 0]
@@ -37,6 +38,9 @@ def coneProcess(frame, hue, sat, val):
                 ((x,y), radius) = cv2.minEnclosingCircle(c)
                 M = cv2.moments(c)
                 '''
+        data.append(out)
+        return data #Keep in mind that it might not work
+                          
 SCALE=1
 WIDTH=160*SCALE
 HEIGHT=90*SCALE
@@ -69,7 +73,7 @@ coneimage = Cone()
 hue = [0.0, 25.56670510573068]
 sat = [206.36692105437356, 255.0]
 val = [175.7913581587428, 255.0]]
-color = (255, 0, 0) #RGB
+color = (0, 255, 0) #RGB
 '''
 while True:
     count += 1
@@ -102,3 +106,4 @@ while True:
 
 
     cvSource.putFrame(image_copy)
+ 
