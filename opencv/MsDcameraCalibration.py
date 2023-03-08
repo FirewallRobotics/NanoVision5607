@@ -37,42 +37,47 @@ imgpoints = [] # 2d points in image plane.
 ##for image in images:
 
     ##img = cv.imread(image)
-while True:   
+#while (vid.isOpened()):   
+while (True==True):   
   ret, img = vid.read()
+  print("read from camera again")
   if not ret:
         print("Can't receive frame (stream end?). Exiting ...")
         break
-
-  gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-  print("read from camera again")
- 
-    # Find the chess board corners
-  '''ret, corners = cv.findChessboardCorners(gray, chessboardSize, None)
-
-    # If found, add object points, image points (after refining them)
-  if ret == True:
-        print("find chesscorners")
-        objpoints.append(objp)
-        corners2 = cv.cornerSubPix(gray, corners, (11,11), (-1,-1), criteria)
-        imgpoints.append(corners)
-
-        # Draw and display the corners
-        cv.drawChessboardCorners(img, chessboardSize, corners2, ret)'''
   cv.imshow('img', img)
   if cv.waitKey(0) == ord('q'):
     break
   #cv.waitKey(0)
   sys.exit()
-vid.release()
-cv.destroyAllWindows()
+'''
+  gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+  
+ 
+    # Find the chess board corners
+  ret, corners = cv.findChessboardCorners(gray, chessboardSize, None)
+
+    # If found, add object points, image points (after refining them)
+  if ret == True:
+        print("found chesscorners")
+        objpoints.append(objp)
+        corners2 = cv.cornerSubPix(gray, corners, (11,11), (-1,-1), criteria)
+        imgpoints.append(corners)
+
+        # Draw and display the corners
+        cv.drawChessboardCorners(img, chessboardSize, corners2, ret)
+'''
+
+
 
 
 
 
 ############## CALIBRATION #######################################################
 
-##ret, cameraMatrix, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, frameSize, None, None)
-
+ret, cameraMatrix, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, frameSize, None, None)
+cv.imshow('img', img)
+if cv.waitKey(0) == ord('q'):
+  sys.exit()
 
 ############## UNDISTORTION #####################################################
 
@@ -113,3 +118,6 @@ for i in range(len(objpoints)):
     mean_error += error
 
 print( "total error: {}".format(mean_error/len(objpoints)) )'''
+
+vid.release()
+cv.destroyAllWindows()

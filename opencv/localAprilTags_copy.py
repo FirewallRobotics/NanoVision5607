@@ -4,7 +4,10 @@ import cv2
 import numpy as np
 from networktables import NetworkTables
 import sys
-from cscore import CameraServer
+#from cscore import CameraServer, VideoSource, VideoMode, VideoSink, CvSink, CvSource
+import cscore as cs
+import team5607NetworkTables
+
 # import AprilTagPoseEstimator
 #import Transform3d
 #import Rotation3d
@@ -22,74 +25,149 @@ def area(ptA, ptB, ptC, ptD):
   width = ptB[1] - ptC[1]
   area = length * width
   return area'''
+
+def connectCameraServerCamera():
+    #Using WPILIb CameraServer implementation
+  '''cameras = {
+          "apriltag": "/dev/v4l/by-id/usb-EMEET_HD_Webcam_eMeet_C960_SN0001-video-index0",
+          "items": "/dev/v4l/by-id/usb-Microsoft_Microsoft®_LifeCam_HD-3000-video-index0"
+      }
+    camera = cs.UsbCamera("usbcam", cameras["apriltag"])#1, devcam or vid'''
+  '''vid = cv2.VideoCapture(0)
+  cs = CameraServer
+  cs.enableLogging()
+  # cs.UsbCamera("usbcam", "0")
+  camera = cs.startAutomaticCapture()
+  cvsink = cs.getVideo()'''
+
+  '''When CameraServer opens a camera, it creates a webpage that you can use to view the camera 
+  stream and view the effects of various camera settings. To connect to the web interface, use 
+  a web browser to navigate to http://roborio-5607-frc.local:1181. '''
+  #init the CameraServer
+  camServ = cs.CameraServer
+
+  camServ.enableLogging()
+
+  camera1 = camServ.startAutomaticCapture(0)
+  #server = camServ.getServer()
+  #cscore is agressive in turning off camras not in use, need to do this when we have multiple cameras to keep them on.
+  #camera1.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen)
+  print("Setting source for camera1")
+  #server.setSource(camera1)
+
+  windowWidth = 640
+  windowHeight = 480
+  brightness = 100
+  FPS=30
+
+  #Setup output to dashboard
+  output = cs.CameraServer.putVideo("Name", windowWidth, windowHeight)
+  camera1.setResolution(windowWidth, windowHeight)
+  #camera1.setVideoMode(VideoMode.PixelFormat.kMJPEG, windowWidth, windowHeight, FPS)
+  # Allocating new images is very expensive, always try to preallocate
+  # shape tuple is rows, columns, so I'm assuming we should allocate same as window size
+  img = np.zeros(shape=(windowHeight, windowWidth, 3), dtype=np.uint8)
+  #cvsink = cs.CameraServer.getVideo()
+  #cvsink.setSource(camera1)
+  #camera.setVideoMode(cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
+
+  #cvsink = cs.CvSink("cvsink")
+  cvSource = cs.CvSource("aprilTags Camera", cs.VideoMode.PixelFormat.kMJPEG, windowWidth, windowHeight, FPS) #get rid of red by nanovision code
+  '''
+    while True:
+      # Tell the CvSink to grab a frame from the camera and put it
+      # in the source image. If there is an error notify the output. time, img = cvSink.grabFrame(img)
+      time, img = cvsink.grabFrame(img)
+      #ret, img = camera1.grabFrame(img)
+      if time == 0:
+        # Send the output the error.
+        # skip the rest of the current iteration continuep
+        output.notifyError(cvsink.getError())
+        print("time waas 0")
+        continue
+      #
+      # Insert your image processing logic here!
+      #
+      # (optional) send some image back to the dashboard
+      output.putFrame(img)
+
+    '''
+    
+
+def connectOpencvCamera():
+    #Setup camera connection
+    windowWidth = 640
+    windowHeight = 480
+    brightness = 100
+    FPS=30
+
+    #Setup output to dashboard
+    output = cs.CameraServer.putVideo("April Tag Vision Name", windowWidth, windowHeight)
+    #camera1.setResolution(windowWidth, windowHeight)
+    #camera1.setVideoMode(VideoMode.PixelFormat.kMJPEG, windowWidth, windowHeight, FPS)
+    # Allocating new images is very expensive, always try to preallocate
+    # shape tuple is rows, columns, so I'm assuming we should allocate same as window size
+    img = np.zeros(shape=(windowHeight, windowWidth, 3), dtype=np.uint8)
+    #cvsink = cs.CameraServer.getVideo()
+    #cvsink.setSource(camera1)
+    #camera.setVideoMode(cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
+
+    
+ 
+    #Using the local laptop webcam and openCV
+    vid =cv2.VideoCapture(0)
+    if not vid.isOpened():
+      print("Cannot open camera")
+      exit()
+
+    #get first frame
+    ret, img = vid.read()
+
+    #Dislay camera feed in local window
+    i=1
+    while (i<6):   
+      ret, img = vid.read()
+      print("read from camera again ")
+      print(i)
+      if not ret:
+            print("Can't receive frame (stream end?). Exiting ...")
+            break
+      '''
+        #Darby camera is dark let's adjust the contrast and birghtness
+        # define the contrast and brightness value
+        contrast = 5. # Contrast control ( 0 to 127)
+        brightness = 2. # Brightness control (0-100)
+
+        # call addWeighted function. use beta = 0 to effectively only operate on one image
+        out = cv2.addWeighted( img, contrast, img, 0, brightness)
+      '''
+
+      i+=1
+      cv2.imshow('img', img)
+      # (optional) send some image back to the dashboard using wplilib CameraServer impl
+      output.putFrame(img)
+      #cvsink = cs.CvSink("cvsink")
+      '''cvSource = cs.CvSource("aprilTags Camera", cs.VideoMode.PixelFormat.kMJPEG, windowWidth, windowHeight, FPS) #get rid of red by nanovision code
+
+      cvMjpegServer = cs.MjpegServer("aprilTaags", port=5801)#here
+      cvMjpegServer.setSource(cvSource)
+      # mjpg:http://<IP or host>:<port>/?action=stream
+      csTable = NetworkTables.getDefault()
+      csTable.getEntry("/CameraPublisher/PiCam/streams").setStringArray(["mjpeg:http://127.0.0.1:5801/?action=stream"])
+      '''
+      #Make it easy to close the camera display window, just press q to close window
+      if cv2.waitKey(0) == ord('q'):
+        continue
   
-# construct the argument parser and parse the arguments
-#def main():
-####thinking here
-#Setup camera connection
-#Using WPILIb CameraServer implementation
-'''cameras = {
-        "apriltag": "/dev/v4l/by-id/usb-EMEET_HD_Webcam_eMeet_C960_SN0001-video-index0",
-        "items": "/dev/v4l/by-id/usb-Microsoft_Microsoft®_LifeCam_HD-3000-video-index0"
-    }
-   camera = cs.UsbCamera("usbcam", cameras["apriltag"])#1, devcam or vid'''
-'''vid = cv2.VideoCapture(0)
-cs = CameraServer
-cs.enableLogging()
-# cs.UsbCamera("usbcam", "0")
-camera = cs.startAutomaticCapture()
-cvsink = cs.getVideo()'''
+    # When everything done, release the capture
+    vid.release()
+    cv2.destroyAllWindows()
+'''
 
-#Using the local laptop webcam and openCV
-windowWidth = 640
-windowHeight = 840
-brightness = 100
 
-#Setup output to dashboard
-cs = CameraServer
-output = cs.putVideo("Name", windowWidth, windowHeight)
-
-vid =cv2.VideoCapture(0)
-if not vid.isOpened():
-    print("Cannot open camera")
-    exit()
-
-#get first frame
-ret, img = vid.read()
-
-#Dislay camera feed in local window
-i=1
-while (i<6):   
-  ret, img = vid.read()
-  print("read from camera again ")
-  print(i)
-  if not ret:
-        print("Can't receive frame (stream end?). Exiting ...")
-        break
-  
-  #Darby camera is dark let's adjust the contrast and birghtness
-  '''# define the contrast and brightness value
-  contrast = 5. # Contrast control ( 0 to 127)
-  brightness = 2. # Brightness control (0-100)
-
-  # call addWeighted function. use beta = 0 to effectively only operate on one image
-  out = cv2.addWeighted( img, contrast, img, 0, brightness)'''
-
-  i+=1
-  cv2.imshow('img', img)
-  # (optional) send some image back to the dashboard using wplilib CameraServer impl
-  output.putFrame(img)
-  #Make it easy to close the cmera display window, just press q to close window
-  if cv2.waitKey(0) == ord('q'):
-    continue
-  
-# When everything done, release the capture
-vid.release()
-cv2.destroyAllWindows()
-sys.exit()
 # (optional) Setup a CvSource. This will send images back to the Dashboard
 #outputStream = cs.putVideo("Name", 320, 240)
-'''
+
 # camera.setVideoMode(cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
 # Allocating new images is very expensive, always try to preallocate
 img = np.zeros(shape=(240, 320, 3), dtype=np.uint8)
@@ -119,6 +197,8 @@ cvMjpegServerMid.setSource(cvSourceMid)
 
 ###end of thinking
 
+# construct the argument parser and parse the arguments
+#def main():
 
 ###Implimentation of Camera Calibration code
 chessboardSize = (24,17)
@@ -162,7 +242,8 @@ for image in images:
     cv2.waitKey(1000)
     
 cv2.destroyAllWindows()
-
+'''
+'''
 ############## CALIBRATION #######################################################
 
 ret, cameraMatrix, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, frameSize, None, None)
@@ -256,3 +337,20 @@ sd1.putNumber('Point D', ptD)
 sd1.putNumber('Center X', cX)
 sd1.putNumber('Center Y', cY)
 sd1.putNumber('ID', ID)'''
+
+
+# call script with "local" to use openCV camera connection 
+# no argument to script will default to CameraServer UsbCamera
+if __name__ == '__main__':
+  #intitialize Vision Network Tables 
+  #in competeion it is recommended to use static ip's 10.56.07.2 would be out team's static ip.
+  team5607_vision=team5607NetworkTables.visionTable(server='roborio-5607-frc.local', tableName="apriltag")
+  
+  if len(sys.argv)<2:
+    print("Defaulting to CameraServer implementation")    
+    connectCameraServerCamera()
+  elif sys.argv[1].lower() == 'local':
+    print("Connecting to local Camera with OpenCV")
+    connectOpencvCamera()
+  
+  sys.exit()
