@@ -31,6 +31,7 @@ except:
     channel_path = os.path.join(file_path, 'channel')
 
 print("Using environment list file: " + env_file)
+print("File path is " + channel_path)
 #endregion
 
 #region Read env file:
