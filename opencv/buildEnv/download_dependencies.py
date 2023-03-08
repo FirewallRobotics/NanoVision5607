@@ -18,7 +18,7 @@ try:
     if arg1 is not None:
         env_file = arg1
     else:
-        env_file = 'arcgis_v1_dependencies.txt'
+        env_file = 'arc_dependencies.txt'
 
     if arg2 is not None:
         channel_path = arg2
