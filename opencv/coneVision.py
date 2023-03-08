@@ -21,16 +21,16 @@ def coneProcess(frame, hue, sat, val):
         kernel = None
         anchor = (-1,-1)
         borderValue = (-1)
-        out = cv2.inRange(frame, (hue[0], sat[0], val[0]), (hue[1], sat[1], val[1]) #threshold
-        out = cv2.erode(out, kernel, anchor, iterations = 3, borderType = cv2.BORDER_CONSTANT, borderValue) #erode
-        out = cv2.dilate(out, kernel, anchor, iterations = 8, borderType = cv2.BORDER_CONSTANT, borderValue) #dilate
+        out = cv2.inRange(frame, (hue[0], sat[0], val[0]), (hue[1], sat[1], val[1])) #threshold
+        out = cv2.erode(out, kernel, anchor, iterations = 3, borderType = cv2.BORDER_CONSTANT, borderValue = borderValue) #erode
+        out = cv2.dilate(out, kernel, anchor, iterations = 8, borderType = cv2.BORDER_CONSTANT, borderValue = borderValue) #dilate
         cnts, a = cv2.findContours(out, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE) #Finding Contours
                           
         center = [0,0]
         data = [[0,0], 0]
                           
         # only if a single contor was founded.
-       '''
+        '''
         if len(cnts) > 0:
                 # find the largest contour then use it.
                 # to compute the mininum enclosing circle and centroid.
@@ -69,12 +69,12 @@ count = 0
 
 
 coneimage = Cone()
-'''
+
 hue = [0.0, 25.56670510573068]
 sat = [206.36692105437356, 255.0]
-val = [175.7913581587428, 255.0]]
+val = [175.7913581587428, 255.0]
 color = (0, 255, 0) #RGB
-'''
+
 while True:
     count += 1
     time, imageorg = cvsink.grabFrame(test)
