@@ -26,7 +26,7 @@ try:
         file_path = os.path.dirname(os.path.realpath(__file__))
         channel_path = os.path.join(file_path, 'channel')
 except:
-    env_file = 'arc_arc_dedependencies.txt'
+    env_file = 'arc_dedependencies.txt'
     file_path = os.path.dirname(os.path.realpath(__file__))
     channel_path = os.path.join(file_path, 'channel')
 
