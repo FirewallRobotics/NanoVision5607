@@ -5,7 +5,7 @@ from networktables import NetworkTables
 import cscore as cs
 #ßimport conevisiongrip
 from conevisiongrip import Cone
-import time
+import time as t
 
 def coneProcess(frame, hue, sat, val):
         '''Adds the filters to the image.
@@ -116,7 +116,7 @@ while True:
     cvSource.putFrame(image_copy)
     cv2.imwrite(str(number) + "conesample.png", image_copy) #comment out later
     cv2.imwrite(str(number) + "coneproc.png", image_copy) #comment out later
-    time.sleep(15) #15 seconds of sleep
+    t.sleep(15) #15 seconds of sleep
     number += 1
     
     
