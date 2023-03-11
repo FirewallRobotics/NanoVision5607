@@ -84,7 +84,7 @@ while True:
         continue
     image_pipeline = coneimage.process(imageorg)
     cvSourceMid.putFrame(image_pipeline)
-    contours = coneimage.findContours()
+    contours = coneimage.find_contours_output
     # draw contours on the original image + dilate the image
     image_copy = imageorg.copy()
     contour_sizes = [(cv2.contourArea(contour), contour) for contour in contours]
