@@ -106,4 +106,4 @@ while True:
 
 
     cvSource.putFrame(image_copy)
- 
+    cv2.imwrite("conesample.png", image_copy) #comment out later
