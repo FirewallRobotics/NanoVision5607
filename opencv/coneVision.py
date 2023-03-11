@@ -82,7 +82,7 @@ while True:
         print("error:", cvsink.getError())
 
         continue
-    image_pipeline = coneimage.process(imageorg)
+    image_pipeline = coneimage.process(coneimage, imageorg)
     cvSourceMid.putFrame(image_pipeline)
     contours = coneimage.findContours()
     # draw contours on the original image + dilate the image
