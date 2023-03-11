@@ -129,7 +129,7 @@ while True:
     if number == 4:
         number = 1
     cvSource.putFrame(image_copy)
-    cv2.imwrite(str(number) + "conesample.png", image_copy) #comment out later
-    cv2.imwrite(str(number) + "coneproc.png", image_copy) #comment out later
+    cv2.imwrite(str(number) + "cubesample.png", image_copy) #comment out later
+    cv2.imwrite(str(number) + "cubeproc.png", image_copy) #comment out later
     t.sleep(15) #15 seconds of sleep
     number += 1
