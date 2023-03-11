@@ -23,7 +23,7 @@ def cubeProcess(frame, hue, sat, val):
     anchor = (-1, -1)
     borderValue = (-1)
     out = cv2.inRange(frame, (hue[0], sat[0], val[0]), (hue[1], sat[1], val[1])) #threshold
-    out = cv2.erode(out, kernel, anchor, iterations = 7.5, borderType = cv2.BORDER_CONSTANT, borderValue = borderValue) #erode
+    out = cv2.erode(out, kernel, anchor, iterations = 7, borderType = cv2.BORDER_CONSTANT, borderValue = borderValue) #erode
     out = cv2.dilate(out, kernel, anchor, iterations = 17, borderType = cv2.BORDER_CONSTANT, borderValue = borderValue) #dilate
     cnts, a = cv2.findContours(out, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE) #Finding Contours
     
@@ -108,7 +108,7 @@ while True:
     contours = cubeimage.find_contours_output
     # draw contours on the original image + dilate the image
     image_copy = imageorg.copy()
-    coneData= cubeProcess(imageorg, hue, sat,val)
+    cubeData= cubeProcess(imageorg, hue, sat,val)
     contour_sizes = [(cv2.contourArea(contour), contour) for contour in contours]
     NetworkTables.initialize(server='roborio-5607-frc.local')##change to be the IP adress of computer
     # mrPhilips laptop # NetworkTables.initialize(server='192.168.1.64')##change to be the IP adress of computer
