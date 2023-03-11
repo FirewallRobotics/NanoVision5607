@@ -74,7 +74,7 @@ hue = [0.0, 25.56670510573068]
 sat = [206.36692105437356, 255.0]
 val = [175.7913581587428, 255.0]
 color = (0, 255, 0) #RGB
-
+number = 1
 while True:
     count += 1
     time, imageorg = cvsink.grabFrame(test)
@@ -103,7 +103,10 @@ while True:
 
     except ValueError:
         pass
-
-
+    
+    if number == 4:
+        number = 1
     cvSource.putFrame(image_copy)
-    cv2.imwrite("conesample.png", image_copy) #comment out later
+    cv2.imwrite(str(number) + "conesample.png", image_copy) #comment out later
+    number += 1
+    
