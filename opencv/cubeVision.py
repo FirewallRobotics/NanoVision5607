@@ -4,6 +4,7 @@ from networktables import NetworkTables
 import cscore as cs
 #ßimport cubevisiongrip
 from cubevisiongrip import Cube
+import time as t
  
 def cubeProcess(frame, hue, sat, val):
     ''' Adds the filters to the image
@@ -93,6 +94,7 @@ hue = [116.54676258992805, 140.2716468590832]
 sat = [87.14028776978417, 255.0]
 val = [114.65827338129496, 255.0]
 color = (0, 255, 0)
+number = 1
                           
 while True:
     count += 1
@@ -106,6 +108,7 @@ while True:
     contours = cubeimage.find_contours_output
     # draw contours on the original image + dilate the image
     image_copy = imageorg.copy()
+    coneData= cubeProcess(imageorg, hue, sat,val)
     contour_sizes = [(cv2.contourArea(contour), contour) for contour in contours]
     NetworkTables.initialize(server='roborio-5607-frc.local')##change to be the IP adress of computer
     # mrPhilips laptop # NetworkTables.initialize(server='192.168.1.64')##change to be the IP adress of computer
@@ -124,3 +127,10 @@ while True:
 
 
     cvSource.putFrame(image_copy)
+    if number == 4:
+        number = 1
+    cvSource.putFrame(image_copy)
+    cv2.imwrite(str(number) + "conesample.png", image_copy) #comment out later
+    cv2.imwrite(str(number) + "coneproc.png", image_copy) #comment out later
+    t.sleep(15) #15 seconds of sleep
+    number += 1
