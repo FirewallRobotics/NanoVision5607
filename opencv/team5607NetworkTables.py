@@ -47,7 +47,7 @@ class visionTable:
         self.tableKV={key: -1 for key in self.tableKeys}
         self.updateTable(self.tableKV)
         #use ntporperty to access NetworkTables vairables like a normal vairable
-        visionTable = ntproperty('/SmartDashboard/apriltag', self.tableKV)
+      #  visionTable = ntproperty('/SmartDashboard/apriltag', self.tableKV)
         
         print("Vision Netwok Table Initialized")
 
