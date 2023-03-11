@@ -126,7 +126,6 @@ while True:
         pass
 
 
-    cvSource.putFrame(image_copy)
     if number == 4:
         number = 1
     cvSource.putFrame(image_copy)
