@@ -1,4 +1,4 @@
-import cv2
+iimport cv2
 import numpy
 import math
 from enum import Enum
@@ -49,29 +49,6 @@ class Cone:
         self.find_contours_output = None
 
 
-    def process(self, source0):
-        """
-        Runs the pipeline and sets all outputs to new values.
-        """
-        # Step Resize_Image0:
-        self.__resize_image_input = source0
-        (self.resize_image_output) = self.__resize_image(self.__resize_image_input, self.__resize_image_width, self.__resize_image_height, self.__resize_image_interpolation)
-
-        # Step HSV_Threshold0:
-        self.__hsv_threshold_input = self.resize_image_output
-        (self.hsv_threshold_output) = self.__hsv_threshold(self.__hsv_threshold_input, self.__hsv_threshold_hue, self.__hsv_threshold_saturation, self.__hsv_threshold_value)
-
-        # Step CV_erode0:
-        self.__cv_erode_src = self.hsv_threshold_output
-        (self.cv_erode_output) = self.__cv_erode(self.__cv_erode_src, self.__cv_erode_kernel, self.__cv_erode_anchor, self.__cv_erode_iterations, self.__cv_erode_bordertype, self.__cv_erode_bordervalue)
-
-        # Step CV_dilate0:
-        self.__cv_dilate_src = self.cv_erode_output
-        (self.cv_dilate_output) = self.__cv_dilate(self.__cv_dilate_src, self.__cv_dilate_kernel, self.__cv_dilate_anchor, self.__cv_dilate_iterations, self.__cv_dilate_bordertype, self.__cv_dilate_bordervalue)
-
-        # Step Find_Contours0:
-        self.__find_contours_input = self.cv_dilate_output
-        (self.find_contours_output) = self.__find_contours(self.__find_contours_input, self.__find_contours_external_only)
 
 
     @staticmethod
@@ -147,6 +124,29 @@ class Cone:
         method = cv2.CHAIN_APPROX_SIMPLE
         im2, contours, hierarchy =cv2.findContours(input, mode=mode, method=method)
         return contours
+    
+    def process(self, source0):
+        """
+        Runs the pipeline and sets all outputs to new values.
+        """
+        # Step Resize_Image0:
+        self.__resize_image_input = source0
+        (self.resize_image_output) = self.__resize_image(self.__resize_image_input, self.__resize_image_width, self.__resize_image_height, self.__resize_image_interpolation)
 
+        # Step HSV_Threshold0:
+        self.__hsv_threshold_input = self.resize_image_output
+        (self.hsv_threshold_output) = self.__hsv_threshold(self.__hsv_threshold_input, self.__hsv_threshold_hue, self.__hsv_threshold_saturation, self.__hsv_threshold_value)
+
+        # Step CV_erode0:
+        self.__cv_erode_src = self.hsv_threshold_output
+        (self.cv_erode_output) = self.__cv_erode(self.__cv_erode_src, self.__cv_erode_kernel, self.__cv_erode_anchor, self.__cv_erode_iterations, self.__cv_erode_bordertype, self.__cv_erode_bordervalue)
+
+        # Step CV_dilate0:
+        self.__cv_dilate_src = self.cv_erode_output
+        (self.cv_dilate_output) = self.__cv_dilate(self.__cv_dilate_src, self.__cv_dilate_kernel, self.__cv_dilate_anchor, self.__cv_dilate_iterations, self.__cv_dilate_bordertype, self.__cv_dilate_bordervalue)
+
+        # Step Find_Contours0:
+        self.__find_contours_input = self.cv_dilate_output
+        (self.find_contours_output) = self.__find_contours(self.__find_contours_input, self.__find_contours_external_only)
 
 
