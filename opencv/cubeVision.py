@@ -118,7 +118,7 @@ while True:
         radius = data[1]
         #image = data[2]
         sd1 = NetworkTables.getTable("cube")
-        sd1.putNumber("Center", center)  ## tuple
+        sd1.putNumber("Center", str(center))  ## tuple
         sd1.putNumber("Raidus", radius) #tuple
 
 
