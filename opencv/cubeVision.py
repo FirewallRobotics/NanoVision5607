@@ -88,12 +88,12 @@ count = 0
 
 
 cubeimage = Cube()
-'''
+
 hue = [116.54676258992805, 140.2716468590832]
 sat = [87.14028776978417, 255.0]
 val = [114.65827338129496, 255.0]
 color = (0, 255, 0)
-'''                          
+                          
 while True:
     count += 1
     time, imageorg = cvsink.grabFrame(test)
@@ -103,7 +103,7 @@ while True:
         continue
     image_pipeline = cubeimage.process(imageorg)
     cvSourceMid.putFrame(image_pipeline)
-    contours = cubeimage.findContours()
+    contours = cubeimage.find_contours_output
     # draw contours on the original image + dilate the image
     image_copy = imageorg.copy()
     contour_sizes = [(cv2.contourArea(contour), contour) for contour in contours]
