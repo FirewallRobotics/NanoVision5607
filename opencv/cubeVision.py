@@ -23,8 +23,8 @@ def cubeProcess(frame, hue, sat, val):
     anchor = (-1, -1)
     borderValue = (-1)
     out = cv2.inRange(frame, (hue[0], sat[0], val[0]), (hue[1], sat[1], val[1])) #threshold
-    out = cv2.erode(out, kernel, anchor, iterations = 7, borderType = cv2.BORDER_CONSTANT, borderValue = borderValue) #erode
-    out = cv2.dilate(out, kernel, anchor, iterations = 17, borderType = cv2.BORDER_CONSTANT, borderValue = borderValue) #dilate
+    out = cv2.erode(out, kernel, anchor, iterations = 3, borderType = cv2.BORDER_CONSTANT, borderValue = borderValue) #erode
+    out = cv2.dilate(out, kernel, anchor, iterations = 14, borderType = cv2.BORDER_CONSTANT, borderValue = borderValue) #dilate
     cnts, a = cv2.findContours(out, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE) #Finding Contours
     
     center = [0,0]
@@ -90,9 +90,9 @@ count = 0
 
 cubeimage = Cube()
 
-hue = [116.54676258992805, 140.2716468590832]
-sat = [87.14028776978417, 255.0]
-val = [114.65827338129496, 255.0]
+hue = [107.56656740921443, 171.19016287354705]
+sat = [83.95683599032944, 255.0]
+val = [97.8417240672832, 255.0]
 color = (0, 255, 0)
 number = 1
                           

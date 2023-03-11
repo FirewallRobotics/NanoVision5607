@@ -20,16 +20,16 @@ class Cube:
         self.cv_resize_output = None
 
         self.__hsv_threshold_input = self.cv_resize_output
-        self.__hsv_threshold_hue = [116.54676258992805, 140.2716468590832]
-        self.__hsv_threshold_saturation = [87.14028776978417, 255.0]
-        self.__hsv_threshold_value = [114.65827338129496, 255.0]
+        self.__hsv_threshold_hue = [107.56656740921443, 171.19016287354705]
+        self.__hsv_threshold_saturation = [83.95683599032944, 255.0]
+        self.__hsv_threshold_value = [97.8417240672832, 255.0]
 
         self.hsv_threshold_output = None
 
         self.__cv_erode_src = self.hsv_threshold_output
         self.__cv_erode_kernel = None
         self.__cv_erode_anchor = (-1, -1)
-        self.__cv_erode_iterations = 7.5
+        self.__cv_erode_iterations = 3.0
         self.__cv_erode_bordertype = cv2.BORDER_CONSTANT
         self.__cv_erode_bordervalue = (-1)
 
@@ -38,7 +38,7 @@ class Cube:
         self.__cv_dilate_src = self.cv_erode_output
         self.__cv_dilate_kernel = None
         self.__cv_dilate_anchor = (-1, -1)
-        self.__cv_dilate_iterations = 17.0
+        self.__cv_dilate_iterations = 14.0
         self.__cv_dilate_bordertype = cv2.BORDER_CONSTANT
         self.__cv_dilate_bordervalue = (-1)
 
