@@ -10,7 +10,7 @@ from pdb import set_trace
 
 # Get time of stream and name for saving outputs
 parser = ArgumentParser()
-parser.add_argument("-rn", "--run_name", type=str, required=False)
+parser.add_argument("-rn", "--run_name", type=str, required=True)
 parser.add_argument("-t", "--run_time", type=int)
 args = parser.parse_args()
 if args.run_time:
