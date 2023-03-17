@@ -79,7 +79,7 @@ number = 1
 NetworkTables.initialize(server='10.56.07.02')
 while True:
     count += 1
-    time, imageorg = cvsink.grabFrame(test)
+    time, imageorg = cvsink.grabFrame(test, 0.225)
     if time == 0:
         print("error:", cvsink.getError())
 
