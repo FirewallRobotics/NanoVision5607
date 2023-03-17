@@ -4,6 +4,7 @@ from networktables import NetworkTables
 import cscore as cs
 #ßimport cubevisiongrip
 from cubevisiongrip import Cube
+import time as t
  
 def cubeProcess(frame, hue, sat, val):
     ''' Adds the filters to the image
@@ -22,8 +23,8 @@ def cubeProcess(frame, hue, sat, val):
     anchor = (-1, -1)
     borderValue = (-1)
     out = cv2.inRange(frame, (hue[0], sat[0], val[0]), (hue[1], sat[1], val[1])) #threshold
-    out = cv2.erode(out, kernel, anchor, iterations = 7.5, borderType = cv2.BORDER_CONSTANT, borderValue = borderValue) #erode
-    out = cv2.dilate(out, kernel, anchor, iterations = 17, borderType = cv2.BORDER_CONSTANT, borderValue = borderValue) #dilate
+    out = cv2.erode(out, kernel, anchor, iterations = 3, borderType = cv2.BORDER_CONSTANT, borderValue = borderValue) #erode
+    out = cv2.dilate(out, kernel, anchor, iterations = 14, borderType = cv2.BORDER_CONSTANT, borderValue = borderValue) #dilate
     cnts, a = cv2.findContours(out, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE) #Finding Contours
     
     center = [0,0]
@@ -89,11 +90,12 @@ count = 0
 
 cubeimage = Cube()
 
-hue = [116.54676258992805, 140.2716468590832]
-sat = [87.14028776978417, 255.0]
-val = [114.65827338129496, 255.0]
+hue = [107.56656740921443, 171.19016287354705]
+sat = [83.95683599032944, 255.0]
+val = [97.8417240672832, 255.0]
 color = (0, 255, 0)
-                          
+number = 1
+NetworkTables.initialize(server='roborio-5607-frc.local')                          
 while True:
     count += 1
     time, imageorg = cvsink.grabFrame(test)
@@ -101,13 +103,14 @@ while True:
         print("error:", cvsink.getError())
 
         continue
-    image_pipeline = cubeimage.process(imageorg)
-    cvSourceMid.putFrame(image_pipeline)
+    cubeimage.process(imageorg)
+    cvSourceMid.putFrame(imageorg)
     contours = cubeimage.find_contours_output
     # draw contours on the original image + dilate the image
     image_copy = imageorg.copy()
+    cubeData= cubeProcess(imageorg, hue, sat,val)
     contour_sizes = [(cv2.contourArea(contour), contour) for contour in contours]
-    NetworkTables.initialize(server='roborio-5607-frc.local')##change to be the IP adress of computer
+  ##change to be the IP adress of computer
     # mrPhilips laptop # NetworkTables.initialize(server='192.168.1.64')##change to be the IP adress of computer
     try:
         data = cubeProcess(imageorg, hue, sat, val)
@@ -115,11 +118,18 @@ while True:
         radius = data[1]
         #image = data[2]
         sd1 = NetworkTables.getTable("cube")
-        sd1.putNumber("Center", center)  ## tuple
+        sd1.putNumber("Center", str(center))  ## tuple
         sd1.putNumber("Raidus", radius) #tuple
 
 
     except ValueError:
         pass
 
+
+    if number == 4:
+        number = 1
     cvSource.putFrame(image_copy)
+    cv2.imwrite(str(number) + "cubesample.png", image_copy) #comment out later
+    cv2.imwrite(str(number) + "cubeproc.png", image_copy) #comment out later
+    t.sleep(15) #15 seconds of sleep
+    number += 1
