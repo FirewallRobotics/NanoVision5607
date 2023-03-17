@@ -47,7 +47,7 @@ WIDTH=160*SCALE
 HEIGHT=90*SCALE
 FPS=15
 
-imageorg = np.zeros(shape=(HEIGHT, WIDTH, 3), dtype=np.uint8)
+test = np.zeros(shape=(HEIGHT, WIDTH, 3), dtype=np.uint8)
 
 cameras = {
         "apriltag": "/dev/v4l/by-id/usb-EMEET_HD_Webcam_eMeet_C960_SN0001-video-index0",
@@ -79,7 +79,7 @@ number = 1
 NetworkTables.initialize(server='10.56.07.02')
 while True:
     count += 1
-    time, imageorg = cvsink.grabFrame(imageorg)
+    time, imageorg = cvsink.grabFrame(test)
     if time == 0:
         print("error:", cvsink.getError())
 
