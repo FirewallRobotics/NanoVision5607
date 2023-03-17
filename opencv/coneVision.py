@@ -68,7 +68,7 @@ cvMjpegServerMid = cs.MjpegServer("conePipeline`", 8082)#here #not too sure
 cvMjpegServerMid.setSource(cvSourceMid)
 count = 0
 
-def localConeVision(imageorg)
+def localConeVision(imageorg):
     coneimage = Cone()
 
     hue = [0.0, 25.56670510573068]
