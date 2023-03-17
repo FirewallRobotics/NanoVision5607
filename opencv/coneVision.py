@@ -47,7 +47,7 @@ WIDTH=160*SCALE
 HEIGHT=90*SCALE
 FPS=15
 
-test = np.zeros(shape=(HEIGHT, WIDTH, 3), dtype=np.uint8)
+imageorg = np.zeros(shape=(HEIGHT, WIDTH, 3), dtype=np.uint8)
 
 cameras = {
         "apriltag": "/dev/v4l/by-id/usb-EMEET_HD_Webcam_eMeet_C960_SN0001-video-index0",
@@ -76,24 +76,22 @@ sat = [206.36692105437356, 255.0]
 val = [175.7913581587428, 255.0]
 color = (0, 255, 0) #RGB
 number = 1
+NetworkTables.initialize(server='10.56.07.02')
 while True:
     count += 1
-    time, imageorg = cvsink.grabFrame(test)
+    time, imageorg = cvsink.grabFrame(imageorg)
     if time == 0:
         print("error:", cvsink.getError())
 
         continue
-    image_pipeline = coneimage.process(imageorg)
+    coneimage.process(imageorg)
     
-    cvSourceMid.putFrame(image_pipeline)
+    cvSourceMid.putFrame(imageorg)
     contours = coneimage.find_contours_output
-    print(str(contours) + " Contours")
     # draw contours on the original image + dilate the image
     image_copy = imageorg.copy()
     coneData= coneProcess(imageorg, hue, sat,val)
-    print("Conedata = "+str(coneData))
     contour_sizes = [(cv2.contourArea(contour), contour) for contour in contours]
-    NetworkTables.initialize(server='roborio-5607-frc.local')
     
     ##change to be the IP adress of computer
     # mrPhilips laptop # NetworkTables.initialize(server='192.168.1.64')##change to be the IP adress of computer
