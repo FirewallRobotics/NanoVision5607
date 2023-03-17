@@ -95,7 +95,7 @@ sat = [83.95683599032944, 255.0]
 val = [97.8417240672832, 255.0]
 color = (0, 255, 0)
 number = 1
-                          
+NetworkTables.initialize(server='roborio-5607-frc.local')                          
 while True:
     count += 1
     time, imageorg = cvsink.grabFrame(test)
@@ -103,14 +103,14 @@ while True:
         print("error:", cvsink.getError())
 
         continue
-    image_pipeline = cubeimage.process(imageorg)
-    cvSourceMid.putFrame(image_pipeline)
+    cubeimage.process(imageorg)
+    cvSourceMid.putFrame(imageorg)
     contours = cubeimage.find_contours_output
     # draw contours on the original image + dilate the image
     image_copy = imageorg.copy()
     cubeData= cubeProcess(imageorg, hue, sat,val)
     contour_sizes = [(cv2.contourArea(contour), contour) for contour in contours]
-    NetworkTables.initialize(server='roborio-5607-frc.local')##change to be the IP adress of computer
+  ##change to be the IP adress of computer
     # mrPhilips laptop # NetworkTables.initialize(server='192.168.1.64')##change to be the IP adress of computer
     try:
         data = cubeProcess(imageorg, hue, sat, val)
