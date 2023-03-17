@@ -8,7 +8,17 @@
 * use "sysctl disable <application.service>" command to disable background services
 * use "sysctl list-units | grep team5607" to find background services for robot
 
+## Connexting to Jetson from Mac with VSCode Terminal
+Use device 
+ls -ls /dev/cu.*
 
+The command should display somehting like this, /dev/cu.usbserial-1410
+
+To connect to the nano type the following command and press enter
+screen /dev/cu.usbserial* 115200 -L
+
+To close the connection use this command.
+sudo shutdown -h now 
 ## Hardware Issues
 
 No longer an issue with updates

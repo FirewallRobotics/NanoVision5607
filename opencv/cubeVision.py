@@ -122,5 +122,4 @@ while True:
     except ValueError:
         pass
 
-
     cvSource.putFrame(image_copy)
