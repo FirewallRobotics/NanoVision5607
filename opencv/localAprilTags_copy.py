@@ -7,6 +7,7 @@ import sys
 #from cscore import CameraServer, VideoSource, VideoMode, VideoSink, CvSink, CvSource
 import cscore as cs
 import team5607NetworkTables
+import coneVision
 
 # import AprilTagPoseEstimator
 #import Transform3d
@@ -146,6 +147,7 @@ def connectOpencvCamera():
       cv2.imshow('img', img)
       # (optional) send some image back to the dashboard using wplilib CameraServer impl
       output.putFrame(img)
+      coneVision.localConeProcess(img)
       #cvsink = cs.CvSink("cvsink")
       '''cvSource = cs.CvSource("aprilTags Camera", cs.VideoMode.PixelFormat.kMJPEG, windowWidth, windowHeight, FPS) #get rid of red by nanovision code
 

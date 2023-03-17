@@ -68,55 +68,55 @@ cvMjpegServerMid = cs.MjpegServer("conePipeline`", 8082)#here #not too sure
 cvMjpegServerMid.setSource(cvSourceMid)
 count = 0
 
+def localConeVision(imageorg)
+    coneimage = Cone()
 
-coneimage = Cone()
+    hue = [0.0, 25.56670510573068]
+    sat = [206.36692105437356, 255.0]
+    val = [175.7913581587428, 255.0]
+    color = (0, 255, 0) #RGB
+    number = 1
+    while True:
+        count += 1
+        '''time, imageorg = cvsink.grabFrame(test)
+        if time == 0:
+            print("error:", cvsink.getError())
 
-hue = [0.0, 25.56670510573068]
-sat = [206.36692105437356, 255.0]
-val = [175.7913581587428, 255.0]
-color = (0, 255, 0) #RGB
-number = 1
-while True:
-    count += 1
-    time, imageorg = cvsink.grabFrame(test)
-    if time == 0:
-        print("error:", cvsink.getError())
+            continue'''
+        coneimage.process(imageorg)
+        
+        cvSourceMid.putFrame(imageorg)
+        contours = coneimage.find_contours_output
+        print(str(contours) + " Contours")
+        # draw contours on the original image + dilate the image
+        image_copy = imageorg.copy()
+        coneData= coneProcess(imageorg, hue, sat,val)
+        print("Conedata = "+str(coneData))
+        contour_sizes = [(cv2.contourArea(contour), contour) for contour in contours]
+        NetworkTables.initialize(server='roborio-5607-frc.local')
+        
+        ##change to be the IP adress of computer
+        # mrPhilips laptop # NetworkTables.initialize(server='192.168.1.64')##change to be the IP adress of computer
+        try:
+            biggest_contour = max(contour_sizes, key=lambda x: x[0])[1]
+            x,y,w,h = cv2.boundingRect(biggest_contour)
+            print(f'{x}, {y}, {x+w}, {y+h}')
+            image_copy = cv2.rectangle(image_copy, (x,y),(x+w,y+h), color=(0, 255, 0))
+            sd1 = NetworkTables.getTable("cone")
+            sd1.putNumber('x_min', x)  ## tuple
+            sd1.putNumber('y_min', y) #tuple
+            sd1.putNumber('x_max',x+w)
+            sd1.putNumber('y_max',y+h)
 
-        continue
-    image_pipeline = coneimage.process(imageorg)
-    
-    cvSourceMid.putFrame(image_pipeline)
-    contours = coneimage.find_contours_output
-    print(str(contours) + " Contours")
-    # draw contours on the original image + dilate the image
-    image_copy = imageorg.copy()
-    coneData= coneProcess(imageorg, hue, sat,val)
-    print("Conedata = "+str(coneData))
-    contour_sizes = [(cv2.contourArea(contour), contour) for contour in contours]
-    NetworkTables.initialize(server='roborio-5607-frc.local')
-    
-    ##change to be the IP adress of computer
-    # mrPhilips laptop # NetworkTables.initialize(server='192.168.1.64')##change to be the IP adress of computer
-    try:
-        biggest_contour = max(contour_sizes, key=lambda x: x[0])[1]
-        x,y,w,h = cv2.boundingRect(biggest_contour)
-        print(f'{x}, {y}, {x+w}, {y+h}')
-        image_copy = cv2.rectangle(image_copy, (x,y),(x+w,y+h), color=(0, 255, 0))
-        sd1 = NetworkTables.getTable("cone")
-        sd1.putNumber('x_min', x)  ## tuple
-        sd1.putNumber('y_min', y) #tuple
-        sd1.putNumber('x_max',x+w)
-        sd1.putNumber('y_max',y+h)
-
-    except ValueError:
-        pass
-    
-    if number == 4:
-        number = 1
-    cvSource.putFrame(image_copy)
-    cv2.imwrite(str(number) + "conesample.png", image_copy) #comment out later
-    cv2.imwrite(str(number) + "coneproc.png", image_copy) #comment out later
-    t.sleep(15) #15 seconds of sleep
-    number += 1
-    
-    
+        except ValueError:
+            pass
+        
+        if number == 4:
+            number = 1
+        cvSource.putFrame(image_copy)
+        cv2.imwrite(str(number) + "conesample.png", image_copy) #comment out later
+        cv2.imwrite(str(number) + "coneproc.png", image_copy) #comment out later
+        t.sleep(15) #15 seconds of sleep
+        number += 1
+        
+        
