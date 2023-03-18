@@ -18,7 +18,7 @@ To connect to the nano type the following command and press enter
 screen /dev/cu.usbserial* 115200 -L
 
 To close the connection use this command.
-sudo shutdown -h now 
+sudo shutdown -h now  
 ## Hardware Issues
 
 No longer an issue with updates
