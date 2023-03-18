@@ -37,7 +37,7 @@ def cubeProcess(frame, hue, sat, val):
         ((x,y)), radius = cv2.minEnclosingCircle(c)
         M = cv2.moments(c)
         try:  
-            center = (int(M["m10"] / M["m00"], int (M["m01"] / M["m00"])))
+            center = (int(M["m10"] / M["m00"]), int (M["m01"] / M["m00"]))
             data = [center, radius]
         except ZeroDivisionError:
             center = [0,0]
@@ -59,52 +59,28 @@ def drawCircle(frame, center, radius, color, minRadius = 7):
        cv2.circle(frame, center, int(radius), color, 2)### change here color is a R
        #print(f'{center}, r:{radius}')
     return frame
-       
+    
+def localCubeVision(imageorg):
+    cubeimage = Cube()
 
-SCALE=1
-WIDTH=160*SCALE
-HEIGHT=90*SCALE
-FPS=15
-
-test = np.zeros(shape=(HEIGHT, WIDTH, 3), dtype=np.uint8)
-
-cameras = {
-        "apriltag": "/dev/v4l/by-id/usb-EMEET_HD_Webcam_eMeet_C960_SN0001-video-index0",
-        "items": "/dev/v4l/by-id/usb-Microsoft_Microsoft®_LifeCam_HD-3000-video-index0"
-    }
-camera = cs.UsbCamera("usbcam", cameras["items"])#1, devcam or vid
-camera.setVideoMode(cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
-
-cvsink = cs.CvSink("cvsink")
-cvsink.setSource(camera)
-
-cvSource = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
-cvSourceMid = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
-
-cvMjpegServer = cs.MjpegServer("cube", 5802)#here
-cvMjpegServer.setSource(cvSource)
-cvMjpegServerMid = cs.MjpegServer("cubePipeline`", 8082)#here #not too sure
-cvMjpegServerMid.setSource(cvSourceMid)
-count = 0
-
-
-cubeimage = Cube()
-
-hue = [107.56656740921443, 171.19016287354705]
-sat = [83.95683599032944, 255.0]
-val = [97.8417240672832, 255.0]
-color = (0, 255, 0)
-number = 1
-NetworkTables.initialize(server='roborio-5607-frc.local')                          
-while True:
-    count += 1
-    time, imageorg = cvsink.grabFrame(test)
-    if time == 0:
-        print("error:", cvsink.getError())
-
-        continue
+    hue = [107.56656740921443, 171.19016287354705]
+    sat = [83.95683599032944, 255.0]
+    val = [97.8417240672832, 255.0]
+    color = (0, 0, 225) #RGB
+    number = 1
+    
     cubeimage.process(imageorg)
-    cvSourceMid.putFrame(imageorg)
+    
+
+    contours = cubeimage.find_contours_output
+    
+    # draw contours on the original image + dilate the image
+    image_copy = imageorg.copy()
+    cubeData= cubeProcess(imageorg, hue, sat,val)
+    
+    contour_sizes = [(cv2.contourArea(contour), contour) for contour in contours]
+    
+    cubeimage.process(imageorg)
     contours = cubeimage.find_contours_output
     # draw contours on the original image + dilate the image
     image_copy = imageorg.copy()
@@ -127,9 +103,48 @@ while True:
 
 
     if number == 4:
-        number = 1
-    cvSource.putFrame(image_copy)
-    cv2.imwrite(str(number) + "cubesample.png", image_copy) #comment out later
-    cv2.imwrite(str(number) + "cubeproc.png", image_copy) #comment out later
-    t.sleep(15) #15 seconds of sleep
-    number += 1
+    
+    ##change to be the IP adress of computer
+    # mrPhilips laptop # NetworkTables.initialize(server='192.168.1.64')##change to be the IP adress of computer
+   
+    
+        
+    
+
+ #   cvSource.putFrame(image_copy)
+        cv2.imwrite(str(number) + "conesample.png", image_copy) #comment out later
+        cv2.imwrite(str(number) + "coneproc.png", image_copy) #comment out later
+        t.sleep(15) #15 seconds of sleep
+        return image_copy
+
+
+
+if __name__ == "__main__":
+
+    SCALE=1
+    WIDTH=160*SCALE
+    HEIGHT=90*SCALE
+    FPS=15
+
+    test = np.zeros(shape=(HEIGHT, WIDTH, 3), dtype=np.uint8)
+
+    cameras = {
+            "apriltag": "/dev/v4l/by-id/usb-EMEET_HD_Webcam_eMeet_C960_SN0001-video-index0",
+            "items": "/dev/v4l/by-id/usb-Microsoft_Microsoft®_LifeCam_HD-3000-video-index0"
+        }
+    camera = cs.UsbCamera("usbcam", cameras["items"])#1, devcam or vid
+    camera.setVideoMode(cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
+
+    cvsink = cs.CvSink("cvsink")
+    cvsink.setSource(camera)
+
+    cvSource = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
+    cvSourceMid = cs.CvSource("cvsource", cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS) #get rid of red by nanovision code
+
+    cvMjpegServer = cs.MjpegServer("cube", 5802)#here
+    cvMjpegServer.setSource(cvSource)
+    cvMjpegServerMid = cs.MjpegServer("cubePipeline`", 8082)#here #not too sure
+    cvMjpegServerMid.setSource(cvSourceMid)
+    count = 0
+
+

@@ -30,7 +30,7 @@
  - Username: wendydarby
  '''
  
-import apriltag
+#import apriltag
 import argparse
 import cv2 
 import numpy as np
@@ -39,6 +39,7 @@ import sys
 import cscore as cs
 import team5607NetworkTables
 import coneVision
+import cubeVision
 
 
 import glob
@@ -179,7 +180,7 @@ def connectOpencvCamera():
 
       #Send processed image to Smartboard
       output.putFrame(img)
-      image_copy=coneVision.localConeProcess(img)
+      image_copy= cubeVision.localCubeVision(img)
       #cvsink = cs.CvSink("cvsink")
       
       #Make it easy to close the camera display window, just press q to close window
