@@ -32,14 +32,14 @@ def coneProcess(frame, hue, sat, val):
         data = [[0,0], 0]
                           
         # only if a single contor was founded.
-        '''
+        
         if len(cnts) > 0:
-                # find the largest contour then use it.
-                # to compute the mininum enclosing circle and centroid.
-                c = max(cnts, key = cv2.contourArea)
-                ((x,y), radius) = cv2.minEnclosingCircle(c)
-                M = cv2.moments(c)
-                '''
+            # find the largest contour then use it.
+            # to compute the mininum enclosing circle and centroid.
+            c = max(cnts, key = cv2.contourArea)
+            ((x,y), radius) = cv2.minEnclosingCircle(c)
+            M = cv2.moments(c)
+            
         data.append(out)
         return data #Keep in mind that it might not work
                           
@@ -56,7 +56,7 @@ def localConeVision(imageorg):
     
     coneimage.process(imageorg)
     
-    cvSourceMid.putFrame(imageorg)
+
     contours = coneimage.find_contours_output
     print(str(contours) + " Contours")
     # draw contours on the original image + dilate the image
@@ -82,8 +82,8 @@ def localConeVision(imageorg):
     except ValueError:
         pass
     
-   
-    cvSource.putFrame(image_copy)
+
+ #   cvSource.putFrame(image_copy)
     cv2.imwrite(str(number) + "conesample.png", image_copy) #comment out later
     cv2.imwrite(str(number) + "coneproc.png", image_copy) #comment out later
     t.sleep(15) #15 seconds of sleep
@@ -132,6 +132,7 @@ if __name__ == '__main__':
         image_copy=localConeVision(imageorg)
         if number == 4:
             number = 1
+        cvSourceMid.putFrame(imageorg)
         cvSource.putFrame(image_copy)
         cv2.imwrite(str(number) + "conesample.png", image_copy) #comment out later
         cv2.imwrite(str(number) + "coneproc.png", image_copy) #comment out later
