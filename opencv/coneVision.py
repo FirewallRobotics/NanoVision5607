@@ -32,14 +32,14 @@ def coneProcess(frame, hue, sat, val):
         data = [[0,0], 0]
                           
         # only if a single contor was founded.
-        '''
+        
         if len(cnts) > 0:
-                # find the largest contour then use it.
-                # to compute the mininum enclosing circle and centroid.
-                c = max(cnts, key = cv2.contourArea)
-                ((x,y), radius) = cv2.minEnclosingCircle(c)
-                M = cv2.moments(c)
-                '''
+            # find the largest contour then use it.
+            # to compute the mininum enclosing circle and centroid.
+            c = max(cnts, key = cv2.contourArea)
+            ((x,y), radius) = cv2.minEnclosingCircle(c)
+            M = cv2.moments(c)
+            
         data.append(out)
         return data #Keep in mind that it might not work
                           
