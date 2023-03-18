@@ -19,7 +19,7 @@ pip download python-keystoneclient -d "/home/aviuser/keystone-deps"
 tar cvfz keystone-deps.tgz keystone-deps
 Then move the tar file to the destination machine that does not have Internet access and perform the following:
 
-tar xvfz keystone-deps.tgz
+tar xvfz keystone-deps.tgz 
 cd keystone-deps
 pip install python_keystoneclient-2.3.1-py2.py3-none-any.whl -f ./ --no-index
 You may need to add --no-deps to the command as follows:

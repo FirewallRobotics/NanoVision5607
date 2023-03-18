@@ -179,7 +179,7 @@ def connectOpencvCamera():
 
       #Send processed image to Smartboard
       output.putFrame(img)
-      coneVision.localConeProcess(img)
+      image_copy=coneVision.localConeProcess(img)
       #cvsink = cs.CvSink("cvsink")
       
       #Make it easy to close the camera display window, just press q to close window
