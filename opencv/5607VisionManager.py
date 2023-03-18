@@ -40,7 +40,7 @@ import cscore as cs
 import team5607NetworkTables
 import coneVision
 
-
+import time as t
 import glob
 ''' The prupose of the Vision Mange is to provide a frame work for the vision scripts
     This class manages the connections to the cameras aso that thre wont be any conflicts 
@@ -121,7 +121,7 @@ def connectCameraServerCamera():
        
           
       cvSource.putFrame(img)
-      cv2.imwrite("/mount/dev/team5607/"+ str(number) + "drivesample.png", img) #comment out later
+      cv2.imwrite("/home/root/UsbStick/"+ str(number) + "drivesample.png", img) #comment out later
       
       t.sleep(15) #15 seconds of sleep
       number += 1
