@@ -32,6 +32,8 @@
  
 #import apriltag
 import argparse
+
+from ntcore import NetworkTableInstance
 import cv2 
 import numpy as np
 from networktables import NetworkTables
@@ -62,12 +64,13 @@ def connectCameraServerCamera():
           "items": "/dev/v4l/by-id/usb-Microsoft_Microsoft®_LifeCam_HD-3000-video-index0"
       }
    # camera = cs.UsbCamera("usbcam", cameras["apriltag"])#1, devcam or vid'''
-  '''vid = cv2.VideoCapture(0)
-  cs = CameraServer
-  cs.enableLogging()
+  vid = cv2.VideoCapture(0)
+  vid.set(10, 0.1)
+  # cs = CameraServer
+  # cs.enableLogging()
   # cs.UsbCamera("usbcam", "0")
-  camera = cs.startAutomaticCapture()
-  cvsink = cs.getVideo()'''
+  # camera = cs.startAutomaticCapture()
+  # cvsink = cs.getVideo()
 
   '''When CameraServer opens a camera, it creates a webpage that you can use to view the camera 
   stream and view the effects of various camera settings. To connect to the web interface, use 
@@ -75,23 +78,28 @@ def connectCameraServerCamera():
   #init the CameraServer
   camServ = cs.CameraServer
 
+  # setup cvSource to send images back to the Dashboard
+  windowWidth = 640
+  windowHeight = 480
+  brightness = 100
+  FPS=30
+  number=0
+  
+
   camServ.enableLogging()
-  cs.UsbCamera("items", "0")
-  camera1 = camServ.startAutomaticCapture()
+  #cs.UsbCamera("items", "0")
+  #camera1 = camServ.startAutomaticCapture()
   #server = camServ.getServer()
   #cscore is agressive in turning off camras not in use, need to do this when we have multiple cameras to keep them on.
   #camera1.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen)
   print("Setting source for camera1")
   #server.setSource(camera1)
 
-  windowWidth = 640
-  windowHeight = 480
-  brightness = 100
-  FPS=30
-
+  
   #Setup output to dashboard
-  output = cs.CameraServer.putVideo("DriveCam", windowWidth, windowHeight)
-  camera1.setResolution(windowWidth, windowHeight)
+  outputStream =cs.putVideo("ItemsCam0", windowWidth, windowHeight)
+  #output = cs.CameraServer.putVideo("DriveCam", windowWidth, windowHeight)
+  # camera1.setResolution(windowWidth, windowHeight)
   #camera1.setVideoMode(VideoMode.PixelFormat.kMJPEG, windowWidth, windowHeight, FPS)
   # Allocating new images is very expensive, always try to preallocate
   # shape tuple is rows, columns, so I'm assuming we should allocate same as window size
@@ -100,28 +108,31 @@ def connectCameraServerCamera():
   #cvsink.setSource(camera1)
   #camera.setVideoMode(cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
 
-  cvsink = cs.CvSink("cvsink")
-  cvSource = cs.CvSource("DriveCam", cs.VideoMode.PixelFormat.kMJPEG, windowWidth, windowHeight, FPS) #get rid of red by nanovision code
+  #cvsink = cs.CvSink("cvsink")
+  #cvSource = cs.CvSource("DriveCam", cs.VideoMode.PixelFormat.kMJPEG, windowWidth, windowHeight, FPS) #get rid of red by nanovision code
   
+  ret, img =vid.read()
   while True:
       # Tell the CvSink to grab a frame from the camera and put it
       # in the source image. If there is an error notify the output. time, img = cvSink.grabFrame(img)
-      time, img = cvsink.grabFrame(img)
+      #time, img = cvsink.grabFrame(img)
+      ret, img =vid.read()
+      yuvimg= cv2.cvtColor(img, cv2.COLOR_RGB2YUV)
       #ret, img = camera1.grabFrame(img)
-      if time == 0:
+      if ret == 0:
         # Send the output the error.
         # skip the rest of the current iteration continuep
-        output.notifyError(cvsink.getError())
-        print("time waas 0")
+        outputStream.notifyError(vid.getError())
+        print("time was 0")
         continue
       #
       # Insert your image processing logic here!
       #
       # (optional) send some image back to the dashboard
-      output.putFrame(img)
+      outputStream.putFrame(yuvimg)
        
           
-      cvSource.putFrame(img)
+      
       cv2.imwrite("/home/root/UsbStick/"+ str(number) + "drivesample.png", img) #comment out later
       
       t.sleep(15) #15 seconds of sleep
@@ -197,9 +208,11 @@ def connectOpencvCamera():
 if __name__ == '__main__':
   #intitialize Vision Network Tables 
   #in competeion it is recommended to use static ip's 10.56.07.2 would be out team's static ip.
-  team5607_vision=team5607NetworkTables.visionTable(server='roborio-5607-frc.local', tableName="apriltag")
-  
+  #team5607_vision=team5607NetworkTables.visionTable(server='roborio-5607-frc.local', tableName="apriltag")
+  ntinst = NetworkTableInstance.getDefault()
+  ntinst.startClientTeam(5607)
   if len(sys.argv)<2:
+    
     print("Defaulting to CameraServer implementation")    
     connectCameraServerCamera()
   elif sys.argv[1].lower() == 'local':
