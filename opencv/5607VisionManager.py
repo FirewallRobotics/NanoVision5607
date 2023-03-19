@@ -57,11 +57,11 @@ import glob
 def connectCameraServerCamera():
   #TODO function needs testing on Jetson
     #Using WPILIb CameraServer implementation
-  '''cameras = {
+  cameras = {
           "apriltag": "/dev/v4l/by-id/usb-EMEET_HD_Webcam_eMeet_C960_SN0001-video-index0",
           "items": "/dev/v4l/by-id/usb-Microsoft_Microsoft®_LifeCam_HD-3000-video-index0"
       }
-    camera = cs.UsbCamera("usbcam", cameras["apriltag"])#1, devcam or vid'''
+   # camera = cs.UsbCamera("usbcam", cameras["apriltag"])#1, devcam or vid'''
   '''vid = cv2.VideoCapture(0)
   cs = CameraServer
   cs.enableLogging()
@@ -76,7 +76,7 @@ def connectCameraServerCamera():
   camServ = cs.CameraServer
 
   camServ.enableLogging()
-
+  cs.UsbCamera("items", "0")
   camera1 = camServ.startAutomaticCapture()
   #server = camServ.getServer()
   #cscore is agressive in turning off camras not in use, need to do this when we have multiple cameras to keep them on.
