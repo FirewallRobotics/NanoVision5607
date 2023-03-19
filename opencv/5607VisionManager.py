@@ -95,7 +95,7 @@ def connectCameraServerCamera():
 
   
   #Setup output to dashboard
-  outputStream =cs.putVideo("ItemsCam0", windowWidth, windowHeight)
+  outputStream =cs.putFrame("ItemsCam0", windowWidth, windowHeight)
   #output = cs.CameraServer.putVideo("DriveCam", windowWidth, windowHeight)
   # camera1.setResolution(windowWidth, windowHeight)
   #camera1.setVideoMode(VideoMode.PixelFormat.kMJPEG, windowWidth, windowHeight, FPS)
