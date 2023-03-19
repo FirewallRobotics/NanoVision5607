@@ -77,7 +77,7 @@ def connectCameraServerCamera():
 
   camServ.enableLogging()
 
-  camera1 = camServ.startAutomaticCapture(0)
+  camera1 = camServ.startAutomaticCapture()
   #server = camServ.getServer()
   #cscore is agressive in turning off camras not in use, need to do this when we have multiple cameras to keep them on.
   #camera1.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen)

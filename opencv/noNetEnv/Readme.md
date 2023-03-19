@@ -9,7 +9,17 @@ Transfer them to the target machine
 Install with $ python -m pip install <whatever>
 
 
+# 2022 cscore not installing on Jetson #
+** try thest install commands **
+# Install older pynetworktables library #
+python3 -m pip install pynetworktables
 
+# Configure OpenCV path and install 2022 cscore #
+export CPPFLAGS=-I/usr/include/opencv4
+python3 -m pip install robotpy-cscore===2022.0.3
+
+
+# Commands for saving packages to tgz to copy to usb drive #
 This is how I handle this case:
 
 On the machine where I have access to Internet:
