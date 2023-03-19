@@ -32,11 +32,14 @@
 #import apriltag
 import argparse
 
+from cscore import CvSource
+
 import cv2 
 import numpy as np
 from networktables import NetworkTables, NetworkTablesInstance
 import sys
-import cscore as cs
+import cscore 
+#from cscore import CameraServer, VideoSource
 import team5607NetworkTables
 import coneVision
 import cubeVision
@@ -69,12 +72,13 @@ def connectCameraServerCamera():
   # cs.UsbCamera("usbcam", "0")
   # camera = cs.startAutomaticCapture()
   # cvsink = cs.getVideo()
+  cvsrc= CvSource.getInstance()
 
   '''When CameraServer opens a camera, it creates a webpage that you can use to view the camera 
   stream and view the effects of various camera settings. To connect to the web interface, use 
   a web browser to navigate to http://roborio-5607-frc.local:1181. '''
   #init the CameraServer
-  camServ = cs.CameraServer
+  camServ = cscore.CameraServer
 
   # setup cvSource to send images back to the Dashboard
   windowWidth = 640
@@ -95,7 +99,7 @@ def connectCameraServerCamera():
 
   
   #Setup output to dashboard
-  outputStream =cs.putFrame("ItemsCam0", windowWidth, windowHeight)
+  outputStream =cvsrc.putVideo("ItemsCam0", windowWidth, windowHeight)
   #output = cs.CameraServer.putVideo("DriveCam", windowWidth, windowHeight)
   # camera1.setResolution(windowWidth, windowHeight)
   #camera1.setVideoMode(VideoMode.PixelFormat.kMJPEG, windowWidth, windowHeight, FPS)
