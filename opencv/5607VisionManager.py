@@ -27,16 +27,14 @@
  - CurrentYear:  2023
  - CreationDay: 5 
  - Date: Fri Mar 17 2023 
- - Username: wendydarby
  '''
  
 #import apriltag
 import argparse
 
-from ntcore import NetworkTableInstance
 import cv2 
 import numpy as np
-from networktables import NetworkTables
+from networktables import NetworkTables, NetworkTablesInstance
 import sys
 import cscore as cs
 import team5607NetworkTables
@@ -209,7 +207,7 @@ if __name__ == '__main__':
   #intitialize Vision Network Tables 
   #in competeion it is recommended to use static ip's 10.56.07.2 would be out team's static ip.
   #team5607_vision=team5607NetworkTables.visionTable(server='roborio-5607-frc.local', tableName="apriltag")
-  ntinst = NetworkTableInstance.getDefault()
+  ntinst = NetworkTablesInstance.getDefault()
   ntinst.startClientTeam(5607)
   if len(sys.argv)<2:
     
