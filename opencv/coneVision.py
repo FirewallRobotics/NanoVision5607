@@ -83,7 +83,7 @@ def localConeVision(imageorg):
         pass
     
    
-    cvSource.putFrame(image_copy)
+    #cvSource.putFrame(image_copy)
     cv2.imwrite(str(number) + "conesample.png", image_copy) #comment out later
     cv2.imwrite(str(number) + "coneproc.png", image_copy) #comment out later
     t.sleep(15) #15 seconds of sleep
@@ -92,7 +92,16 @@ def localConeVision(imageorg):
     
 # no argument to script will default to CameraServer UsbCamera
 if __name__ == '__main__':
- 
+    #process Main Arguments 
+    if len(sys.argv)<2:
+      print("Defaulting to CameraServer implementation")    
+      SERVER_IP='10.56.7.2'
+      connectCameraServerCamera()
+    elif sys.argv[1].lower() == 'local':
+       print("RUnning local")
+       SERVER_IP='127.0.0.1'
+
+
     #process conee images.
     SCALE=1
     WIDTH=160*SCALE
@@ -119,7 +128,7 @@ if __name__ == '__main__':
     cvMjpegServerMid = cs.MjpegServer("conePipeline`", 8082)#here #not too sure
     cvMjpegServerMid.setSource(cvSourceMid)
     count = 0
-    NetworkTables.initialize(server='roborio-5607-frc.local')
+    NetworkTables.initialize(SERVER_IP)
      
     while True:
         count += 1

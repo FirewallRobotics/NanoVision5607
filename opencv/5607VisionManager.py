@@ -153,7 +153,7 @@ def connectOpencvCamera():
     FPS=30
 
     #Setup output to dashboard
-    output = cs.CameraServer.putVideo("April Tag Vision Name", windowWidth, windowHeight)
+    output = cscore.CameraServer.putVideo("April Tag Vision Name", windowWidth, windowHeight)
     #camera1.setResolution(windowWidth, windowHeight)
     #camera1.setVideoMode(VideoMode.PixelFormat.kMJPEG, windowWidth, windowHeight, FPS)
     # Allocating new images is very expensive, always try to preallocate
@@ -211,8 +211,10 @@ if __name__ == '__main__':
   #intitialize Vision Network Tables 
   #in competeion it is recommended to use static ip's 10.56.07.2 would be out team's static ip.
   #team5607_vision=team5607NetworkTables.visionTable(server='roborio-5607-frc.local', tableName="apriltag")
+  
+  NT_DEFAULT_PORT=1735
   ntinst = NetworkTablesInstance.getDefault()
-  ntinst.startClientTeam(5607)
+  ntinst.startClientTeam(5607, NT_DEFAULT_PORT)
   if len(sys.argv)<2:
     
     print("Defaulting to CameraServer implementation")    

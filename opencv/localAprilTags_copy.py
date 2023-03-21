@@ -2,7 +2,7 @@ import apriltag
 import argparse
 import cv2 
 import numpy as np
-from networktables import NetworkTables
+from networktables import NetworkTables, NetworkTablesInstance
 import sys
 #from cscore import CameraServer, VideoSource, VideoMode, VideoSink, CvSink, CvSource
 import cscore as cs
@@ -95,7 +95,7 @@ def connectCameraServerCamera():
     '''
     
 
-def connectOpencvCamera():
+def connectOpencvCamera(visionNt):
     #Setup camera connection
     windowWidth = 640
     windowHeight = 480
@@ -113,14 +113,18 @@ def connectOpencvCamera():
     #cvsink.setSource(camera1)
     #camera.setVideoMode(cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
 
-    
- 
+    iCamState=visionNt.getEntry("/Transitory Values/Item Cam Status")
+    iCamState.setString("Intializing...")
     #Using the local laptop webcam and openCV
     vid =cv2.VideoCapture(0)
     if not vid.isOpened():
       print("Cannot open camera")
+      iCamState.setString("not connected")
       exit()
 
+    robotState= ntinst.getEntry("/RobotState")
+    print("The robot state is: "+robotState.getString("unset"))
+    print("item camera state is: "+iCamState.getString("unset"))
     #get first frame
     ret, img = vid.read()
 
@@ -129,6 +133,9 @@ def connectOpencvCamera():
     while (i<6):   
       ret, img = vid.read()
       print("read from camera again ")
+      robotState= ntinst.getEntry("/RobotState")
+      print("The robot state is: "+robotState.getString("unset"))
+      print("item camera state is: "+iCamState.getString("unset"))
       print(i)
       if not ret:
             print("Can't receive frame (stream end?). Exiting ...")
@@ -147,8 +154,14 @@ def connectOpencvCamera():
       cv2.imshow('img', img)
       # (optional) send some image back to the dashboard using wplilib CameraServer impl
       output.putFrame(img)
-      coneVision.localConeProcess(img)
-      #cvsink = cs.CvSink("cvsink")
+      iCamState.setString("posting image")
+      coneVision.localConeVision(img)
+     
+
+      cvSource = cs.CvSource("aprilTags Camera", cs.VideoMode.PixelFormat.kMJPEG, windowWidth, windowHeight, FPS) #get rid of red by nanovision code
+      cvsink = cs.CvSink("cvsink")
+      cvsink.setSource(cvSource)
+
       '''cvSource = cs.CvSource("aprilTags Camera", cs.VideoMode.PixelFormat.kMJPEG, windowWidth, windowHeight, FPS) #get rid of red by nanovision code
 
       cvMjpegServer = cs.MjpegServer("aprilTaags", port=5801)#here
@@ -346,13 +359,19 @@ sd1.putNumber('ID', ID)'''
 if __name__ == '__main__':
   #intitialize Vision Network Tables 
   #in competeion it is recommended to use static ip's 10.56.07.2 would be out team's static ip.
-  team5607_vision=team5607NetworkTables.visionTable(server='roborio-5607-frc.local', tableName="apriltag")
+  #team5607_visionNT=team5607NetworkTables.visionTable(server='127.0.0.1', tableName="apriltag")
+  NetworkTables.initialize('127.0.0.1')
+  NT_DEFAULT_PORT=1735
+  ntinst = NetworkTablesInstance.getDefault()
+  ntinst.startClientTeam(5607, NT_DEFAULT_PORT)
   
+  robotState= ntinst.getEntry("/RobotState")
+  print("The robot state is: "+robotState.getString("unset"))
   if len(sys.argv)<2:
     print("Defaulting to CameraServer implementation")    
     connectCameraServerCamera()
   elif sys.argv[1].lower() == 'local':
     print("Connecting to local Camera with OpenCV")
-    connectOpencvCamera()
+    connectOpencvCamera(NetworkTables)
   
   sys.exit()
