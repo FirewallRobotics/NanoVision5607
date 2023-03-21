@@ -69,7 +69,14 @@ class visionTable:
         "reflective_tape":[]
     }
 
-    def __init__(self, server="roborio-5607-frc.local", tableName="apriltag"):
+   
+
+    def updateTable(self,tableKV):
+        for key in tableKV:
+            self.tableKV[key] = tableKV[key]
+            self.sd.putNumber(f'{key}',tableKV[key])
+
+    def __init__(self, server="10.56.7.2", tableName="apriltag"):
         self.server=server
         self.tableName=tableName
         NetworkTables.initialize(server)
@@ -84,8 +91,3 @@ class visionTable:
       #  visionTable = ntproperty('/SmartDashboard/apriltag', self.tableKV)
         
         print("Vision Netwok Table Initialized")
-
-    def updateTable(self,tableKV):
-        for key in tableKV:
-            self.tableKV[key] = tableKV[key]
-            self.sd.putNumber(f'{key}',tableKV[key])
