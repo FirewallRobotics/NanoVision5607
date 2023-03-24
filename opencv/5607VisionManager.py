@@ -32,13 +32,13 @@
 #import apriltag
 import argparse
 
-from cscore import CvSource
+from cscore import CvSource, CameraServer
 
 import cv2 
 import numpy as np
 from networktables import NetworkTables, NetworkTablesInstance
 import sys
-import cscore 
+import cscore
 #from cscore import CameraServer, VideoSource
 import team5607NetworkTables
 import coneVision
@@ -78,7 +78,7 @@ def connectCameraServerCamera():
   stream and view the effects of various camera settings. To connect to the web interface, use 
   a web browser to navigate to http://roborio-5607-frc.local:1181. '''
   #init the CameraServer
-  camServ = cscore.CameraServer
+  camServ = CameraServer
 
   # setup cvSource to send images back to the Dashboard
   windowWidth = 640
@@ -115,94 +115,119 @@ def connectCameraServerCamera():
   
   ret, img =vid.read()
   while True:
-      # Tell the CvSink to grab a frame from the camera and put it
-      # in the source image. If there is an error notify the output. time, img = cvSink.grabFrame(img)
-      #time, img = cvsink.grabFrame(img)
-      ret, img =vid.read()
-      yuvimg= cv2.cvtColor(img, cv2.COLOR_RGB2YUV)
-      #ret, img = camera1.grabFrame(img)
-      if ret == 0:
-        # Send the output the error.
-        # skip the rest of the current iteration continuep
-        outputStream.notifyError(vid.getError())
-        print("time was 0")
-        continue
-      #
-      # Insert your image processing logic here!
-      #
-      # (optional) send some image back to the dashboard
-      outputStream.putFrame(yuvimg)
-       
-          
+    # Tell the CvSink to grab a frame from the camera and put it
+    # in the source image. If there is an error notify the output. time, img = cvSink.grabFrame(img)
+    #time, img = cvsink.grabFrame(img)
+    ret, img =vid.read()
+    yuvimg= cv2.cvtColor(img, cv2.COLOR_RGB2YUV)
+    #ret, img = camera1.grabFrame(img)
+    if ret == 0:
+      # Send the output the error.
+      # skip the rest of the current iteration continuep
+      outputStream.notifyError(vid.getError())
+      print("time was 0")
+      continue
+    #
+    # Insert your image processing logic here!
+    #
+    # (optional) send some image back to the dashboard
+    outputStream.putFrame(yuvimg)
       
-      cv2.imwrite("/home/root/UsbStick/"+ str(number) + "drivesample.png", img) #comment out later
-      
-      t.sleep(15) #15 seconds of sleep
-      number += 1
+        
+    
+    write_ret = cv2.imwrite("/home/root/UsbStick/"+ str(number) + "drivesample.png", img) #comment out later
+    if write_ret == 0:
+      print("Error writing image to UsbStick")
+      continue
+    
+    t.sleep(15) #15 seconds of sleep
+    number += 1
 
     
     
 
-def connectOpencvCamera():
-    #function for connecting to local laptop camera
+def connectOpencvCamera(ntinst):
+  #function for connecting to local laptop camera
 
-    #Setup camera connection
-    windowWidth = 640
-    windowHeight = 480
-    brightness = 100
-    FPS=30
+  #Setup camera connection
+  windowWidth = 640
+  windowHeight = 480
+  brightness = 100
+  FPS=30
+  number = 0
 
-    #Setup output to dashboard
-    output = cscore.CameraServer.putVideo("April Tag Vision Name", windowWidth, windowHeight)
-    #camera1.setResolution(windowWidth, windowHeight)
-    #camera1.setVideoMode(VideoMode.PixelFormat.kMJPEG, windowWidth, windowHeight, FPS)
-    # Allocating new images is very expensive, always try to preallocate
-    # shape tuple is rows, columns, so I'm assuming we should allocate same as window size
-    img = np.zeros(shape=(windowHeight, windowWidth, 3), dtype=np.uint8)
-    #cvsink = cs.CameraServer.getVideo()
-    #cvsink.setSource(camera1)
-    #camera.setVideoMode(cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
+  #Setup output to dashboard
 
-    
- 
-    #Using the local laptop webcam and openCV
-    vid =cv2.VideoCapture(0)
-    if not vid.isOpened():
-      print("Cannot open camera")
-      exit()
+  #output = CameraServer.putVideo("April Tag Vision Name", windowWidth, windowHeight)
+  #camera1.setResolution(windowWidth, windowHeight)
+  #camera1.setVideoMode(VideoMode.PixelFormat.kMJPEG, windowWidth, windowHeight, FPS)
+  # Allocating new images is very expensive, always try to preallocate
+  # shape tuple is rows, columns, so I'm assuming we should allocate same as window size
+  img = np.zeros(shape=(windowHeight, windowWidth, 3), dtype=np.uint8)
+  #cvsink = cs.CameraServer.getVideo()
+  #cvsink.setSource(camera1)
+  #camera.setVideoMode(cs.VideoMode.PixelFormat.kMJPEG, WIDTH, HEIGHT, FPS)
 
-    #get first frame
+  CamState = ntinst.getEntry("/Transitory Values/Item Cam Status")
+  CamState.setString("Intializing...")
+  #Using the local laptop webcam and openCV
+  vid =cv2.VideoCapture(0)
+  if not vid.isOpened():
+    print("Cannot open camera")
+    CamState.setString("not connected")
+    exit()
+
+  robotState = ntinst.getEntry("/RobotState")
+  print("The robot state is: "+robotState.getString("unset"))
+  print("item camera state is: "+CamState.getString("unset"))
+  #get first frame
+  ret, img = vid.read()
+
+  #Dislay camera feed in local window
+  i=1
+  while True:   
     ret, img = vid.read()
-
-    #Dislay camera feed in local window
-    i=1
-    while (i<6):   
-      ret, img = vid.read()
-      print("read from camera again ")
-      print(i)
-      if not ret:
-            print("Can't receive frame (stream end?). Exiting ...")
-            break
-    
-      i+=1
-      cv2.imshow('img', img)
-      # (optional) send some image back to the dashboard using wplilib CameraServer impl
-
-
-      #TODO test vision processing here
-
-      #Send processed image to Smartboard
-      output.putFrame(img)
-      image_copy= cubeVision.localCubeVision(img)
-      #cvsink = cs.CvSink("cvsink")
-      
-      #Make it easy to close the camera display window, just press q to close window
-      if cv2.waitKey(0) == ord('q'):
-        continue
+    print("read from camera again ")
+    robotState = ntinst.getEntry("/RobotState")
+    print("The robot state is: " + robotState.getString("unset"))
+    print("Item camera state is: " + CamState.getString("unset"))
+    print(i)
+    if not ret:
+      print("Can't receive frame (stream end?). Exiting ...")
+      break
   
-    # When everything done, release the capture
-    vid.release()
-    cv2.destroyAllWindows()
+    i+=1
+    #cv2.imshow('img', img)
+    # (optional) send some image back to the dashboard using wplilib CameraServer impl
+
+
+    #TODO test vision processing here
+
+    #Send processed image to Smartboard
+#      output.putFrame(img)
+    CamState.setString("posting image")
+    image_copy= cubeVision.localCubeVision(img)
+    #cvsink = cs.CvSink("cvsink")
+
+    write_ret = cv2.imwrite("/home/root/UsbStick/"+ str(number) + "drivesample.png", img) #comment out later
+    if write_ret == 0:
+      print("Error writing image to UsbStick")
+      continue
+    t.sleep(3)
+    
+    if number < 1000:
+      number += 1
+    else:
+      number = 0
+
+    #Make it easy to close the camera display window, just press q to close window
+    #if cv2.waitKey(0) == ord('q'):
+    #  continue
+
+
+  # When everything done, release the capture
+  vid.release()
+  cv2.destroyAllWindows()
 
 
 # call script with "local" to use openCV camera connection 
@@ -211,8 +236,7 @@ if __name__ == '__main__':
   #intitialize Vision Network Tables 
   #in competeion it is recommended to use static ip's 10.56.07.2 would be out team's static ip.
   #team5607_vision=team5607NetworkTables.visionTable(server='roborio-5607-frc.local', tableName="apriltag")
-  
-  NT_DEFAULT_PORT=1735
+  NT_DEFAULT_PORT = 1735
   ntinst = NetworkTablesInstance.getDefault()
   ntinst.startClientTeam(5607, NT_DEFAULT_PORT)
   if len(sys.argv)<2:
@@ -221,7 +245,7 @@ if __name__ == '__main__':
     connectCameraServerCamera()
   elif sys.argv[1].lower() == 'local':
     print("Connecting to local Camera with OpenCV")
-    connectOpencvCamera()
+    connectOpencvCamera(ntinst)
   
   
   sys.exit()
